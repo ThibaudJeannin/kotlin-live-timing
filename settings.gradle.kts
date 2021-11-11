@@ -1,5 +1,4 @@
 rootProject.name = "kotlin-live-timing"
-include("live-timing-commons", "live-timing-view")
 pluginManagement {
     repositories {
         mavenCentral()

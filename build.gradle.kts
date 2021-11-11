@@ -1,5 +1,6 @@
 plugins {
-    kotlin("js") version "1.5.31"
+    kotlin("multiplatform") version "1.5.31"
+    application
 }
 
 group = "me.thibaud"
@@ -11,27 +12,42 @@ repositories {
 }
 
 kotlin {
+    jvm{
+        withJava()
+    }
     js {
         browser {
             commonWebpackConfig {
                 cssSupport.enabled = true
             }
-            binaries.executable()
         }
         binaries.executable()
-        compilations["main"].packageJson {
-            customField("hello", mapOf("one" to 1, "two" to 2))
+    }
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.264-kotlin-1.5.31")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.264-kotlin-1.5.31")
+            }
         }
     }
-}
-
-dependencies {
-    implementation(project(":live-timing-commons"))
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.265-kotlin-1.5.31")
-    implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.265-kotlin-1.5.31")
-//    implementation(npm("react", "17.0.2"))
-//    implementation(npm("react-dom", "17.0.2"))
-//    implementation(npm("styled-components", "5.3.3"))
 }
 
 rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin::class.java) {
