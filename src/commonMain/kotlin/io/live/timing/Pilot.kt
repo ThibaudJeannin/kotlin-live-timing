@@ -1,3 +1,3 @@
 package io.live.timing
 
-data class Pilot(val name : String)
+data class Pilot(val name: String, val number: Int)
