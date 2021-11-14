@@ -38,28 +38,7 @@ class App : RComponent<PropsWithChildren, AppState>() {
             }
         }
 
-        val pilots = listOf(
-            Pilot("Max Verstappen", 33),
-            Pilot("Valtteri Bottas", 77),
-            Pilot("Charles Leclerc", 16),
-            Pilot("Lando Norris", 4),
-            Pilot("Pierre Gasly", 10),
-            Pilot("Fernando Alonso", 14),
-            Pilot("Kimi Raikkonen", 7),
-            Pilot("Mick Schumacher", 47)
-        )
-
-        val timeBoard = TimeBoard(pilots)
-
-        for (i in 1..100) {
-            timeBoard.insertLapTime(
-                ChronoLap(
-                    pilots[i % pilots.size],
-                    Duration.Companion.microseconds((Random.nextInt() % 4000000) + 70000000)
-                )
-            )
-        }
-        timeBoard.updateTimeBoard()
+        val timeBoard = populateTimeBoard()
         table {
             thead {
                 tr {
@@ -75,7 +54,7 @@ class App : RComponent<PropsWithChildren, AppState>() {
                 }
             }
             tbody {
-                for ((pilot, lapTime) in timeBoard.bestLaps.entries.sortedBy(Map.Entry<Pilot, Duration?>::value)) {
+                for ((pilot, lapTime) in timeBoard.sortedResults()) {
 
                     tr {
                         td {
@@ -85,12 +64,47 @@ class App : RComponent<PropsWithChildren, AppState>() {
                             +pilot.name
                         }
                         td {
-                            +"$lapTime"
+                            if (lapTime != null) {
+                                lapTime.toComponents { minutes, seconds, nanoseconds ->
+                                    +("${minutes.toLong()}" +
+                                            ":${seconds.toLong().toString().padStart(2, '0')}" +
+                                            ".${(nanoseconds.toLong() / 1000000).toString().padStart(3, '0')}")
+                                }
+                            } else {
+                                +"no time"
+                            }
                         }
                     }
                 }
             }
 
         }
+    }
+
+    private fun populateTimeBoard(): TimeBoard {
+        val pilots = listOf(
+            Pilot("Max Verstappen", 33),
+            Pilot("Valtteri Bottas", 77),
+            Pilot("Charles Leclerc", 16),
+            Pilot("Lando Norris", 4),
+            Pilot("Pierre Gasly", 10),
+            Pilot("Fernando Alonso", 14),
+            Pilot("Kimi Raikkonen", 7),
+            Pilot("Mick Schumacher", 47)
+        )
+
+        val timeBoard = TimeBoard(pilots)
+
+        for (i in 1..42) {
+            timeBoard.insertLapTime(
+                ChronoLap(
+                    pilots[i % pilots.size],
+                    Duration.milliseconds((Random.nextInt() % 4000) + 70000),
+                    Random.nextBoolean()
+                )
+            )
+        }
+        timeBoard.updateTimeBoard()
+        return timeBoard
     }
 }

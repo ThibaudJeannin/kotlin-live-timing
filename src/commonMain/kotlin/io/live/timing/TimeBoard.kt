@@ -23,11 +23,16 @@ class TimeBoard(private val pilots: List<Pilot>) {
     fun updateTimeBoard() {
         val updatedBestLaps: MutableMap<Pilot, Duration?> = HashMap()
         for (pilot in pilots) {
-            val bestLapForPilot = allLaps.filter { it.pilot == pilot && it.valid }.minByOrNull { chronoLap -> chronoLap.lapTime }
+            val bestLapForPilot =
+                allLaps.filter { it.pilot == pilot && it.valid }.minByOrNull { chronoLap -> chronoLap.lapTime }
             updatedBestLaps[pilot] = bestLapForPilot?.lapTime
 
         }
         bestLaps = updatedBestLaps
+    }
+
+    fun sortedResults(): List<Map.Entry<Pilot, Duration?>> {
+        return bestLaps.entries.sortedWith(compareBy(nullsLast()) { it.value })
     }
 
 }
