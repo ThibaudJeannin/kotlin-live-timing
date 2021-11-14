@@ -1,7 +1,6 @@
 package io.live.timing
 
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
+import kotlinx.serialization.Serializable
 
-@ExperimentalTime
-data class ChronoLap(val pilot : Pilot, val lapTime : Duration, var valid: Boolean = true)
+@Serializable
+data class ChronoLap(val pilot: Pilot, val lapTime: LapTime, var valid: Boolean = true)

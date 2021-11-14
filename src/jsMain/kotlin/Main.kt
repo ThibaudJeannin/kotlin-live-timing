@@ -1,12 +1,8 @@
-import io.live.timing.Pilot
-import kotlinx.browser.document
 import react.dom.render
-import kotlin.time.ExperimentalTime
+import kotlinx.browser.document
 
-@ExperimentalTime
 fun main() {
     render(document.getElementById("root")) {
-        console.log("render")
-        child(App::class) {}
+        child(app)
     }
 }

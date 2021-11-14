@@ -1,13 +1,11 @@
 package io.live.timing
 
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
+import kotlinx.serialization.Serializable
 
-@ExperimentalTime
-class TimeBoard(private val pilots: List<Pilot>) {
+class TimeBoard(val pilots: List<Pilot>) {
 
-    private val allLaps: MutableList<ChronoLap>
-    var bestLaps: Map<Pilot, Duration?>
+    val allLaps: MutableList<ChronoLap>
+    var bestLaps: Map<Pilot, LapTime?>
 
     init {
         allLaps = ArrayList()
@@ -20,8 +18,12 @@ class TimeBoard(private val pilots: List<Pilot>) {
         allLaps.add(lapTime)
     }
 
+    fun insertLapTimes(vararg lapTime: ChronoLap) {
+        allLaps.addAll(lapTime)
+    }
+
     fun updateTimeBoard() {
-        val updatedBestLaps: MutableMap<Pilot, Duration?> = HashMap()
+        val updatedBestLaps: MutableMap<Pilot, LapTime?> = HashMap()
         for (pilot in pilots) {
             val bestLapForPilot =
                 allLaps.filter { it.pilot == pilot && it.valid }.minByOrNull { chronoLap -> chronoLap.lapTime }
@@ -31,7 +33,7 @@ class TimeBoard(private val pilots: List<Pilot>) {
         bestLaps = updatedBestLaps
     }
 
-    fun sortedResults(): List<Map.Entry<Pilot, Duration?>> {
+    fun sortedResults(): List<Map.Entry<Pilot, LapTime?>> {
         return bestLaps.entries.sortedWith(compareBy(nullsLast()) { it.value })
     }
 
