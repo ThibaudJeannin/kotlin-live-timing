@@ -1,5 +1,6 @@
 package io.live.timing
+
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Pilot(val name: String, val number: Int, val team : Constructor)
+data class Constructor(val name : String, val color : String)

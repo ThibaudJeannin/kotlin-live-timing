@@ -13,7 +13,6 @@ class TimeBoard(val pilots: List<Pilot>) {
         this.updateTimeBoard()
     }
 
-
     fun insertLapTime(lapTime: ChronoLap) {
         allLaps.add(lapTime)
     }

@@ -10,17 +10,18 @@ import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.Pilot
 import io.live.timing.TimeBoard
+import kotlin.math.abs
 import kotlin.random.Random
 
 fun main() {
     embeddedServer(Netty, 9090) {
-        val timeBoard = populateTimeBoard()
 
         routing {
             get("/pilots") {
-                call.respond(timeBoard.pilots)
+                call.respond(pilots)
             }
             get("/laps") {
+                val timeBoard = populateTimeBoard()
                 call.respond(timeBoard.allLaps)
             }
 
@@ -41,24 +42,12 @@ fun main() {
 }
 
 private fun populateTimeBoard(): TimeBoard {
-    val pilots = listOf(
-        Pilot("Max Verstappen", 33),
-        Pilot("Valtteri Bottas", 77),
-        Pilot("Charles Leclerc", 16),
-        Pilot("Lando Norris", 4),
-        Pilot("Pierre Gasly", 10),
-        Pilot("Fernando Alonso", 14),
-        Pilot("Kimi Raikkonen", 7),
-        Pilot("Mick Schumacher", 47)
-    )
-
     val timeBoard = TimeBoard(pilots)
-
     for (i in 1..42) {
         timeBoard.insertLapTime(
             ChronoLap(
-                pilots[i % pilots.size],
-                LapTime(1, Random.nextInt() % 4, Random.nextInt() % 1000),
+                pilots[Random.nextInt(0, pilots.size)],
+                LapTime(1, Random.nextInt(21,27), Random.nextInt(0,1000)),
                 Random.nextBoolean()
             )
         )
