@@ -1,6 +1,7 @@
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
@@ -8,15 +9,24 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
-import io.live.timing.Pilot
 import io.live.timing.TimeBoard
-import kotlin.math.abs
+import java.io.File
 import kotlin.random.Random
 
 fun main() {
     embeddedServer(Netty, 9090) {
 
         routing {
+            get("/") {
+                call.respondText(
+                    this::class.java.classLoader.getResource("index.html")!!.readText(),
+                    ContentType.Text.Html
+                )
+            }
+            static("/") {
+                resources("")
+            }
+
             get("/pilots") {
                 call.respond(pilots)
             }
@@ -47,7 +57,7 @@ private fun populateTimeBoard(): TimeBoard {
         timeBoard.insertLapTime(
             ChronoLap(
                 pilots[Random.nextInt(0, pilots.size)],
-                LapTime(1, Random.nextInt(21,27), Random.nextInt(0,1000)),
+                LapTime(1, Random.nextInt(21, 27), Random.nextInt(0, 1000)),
                 Random.nextBoolean()
             )
         )
