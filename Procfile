@@ -1,1 +1,1 @@
-web: ./build/install/bin/kotlin-live-timing
+web: ./build/install/kotlin-live-timing/bin/kotlin-live-timing
