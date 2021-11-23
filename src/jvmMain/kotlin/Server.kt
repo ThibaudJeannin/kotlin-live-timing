@@ -23,7 +23,8 @@ fun main() {
             get("/") {
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
-                    ContentType.Text.Html
+                    ContentType.Text.Html,
+                    HttpStatusCode.OK
                     )
                 log.info("responded to /");
             }
@@ -42,7 +43,7 @@ fun main() {
                 call.respond(timeBoard.allLaps)
             }
             get("/test") {
-                call.respond(HttpStatusCode.OK)
+                call.respond(HttpStatusCode.OK, "ok")
             }
 
             install(ContentNegotiation) {
