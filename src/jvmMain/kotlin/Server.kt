@@ -17,6 +17,7 @@ import kotlin.system.exitProcess
 fun main() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     System.err.println("using port $port")
+    println("starting server on port $port")
     embeddedServer(Netty, port) {
 
         routing {
