@@ -28,10 +28,10 @@ fun main() {
                     )
                 log.info("responded to /");
             }
-//            static("/") {
-//                log.info("handler request on static /")
-//                resources("")
-//            }
+            static("/") {
+                log.info("handler request on static /")
+                resources("")
+            }
 
             get("/pilots") {
                 log.info("handler request on /pilots")
