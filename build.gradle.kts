@@ -62,7 +62,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("Server.kt")
+    mainClass.set("ServerKt")
 }
 
 // include JS artifacts in any JAR we generate
