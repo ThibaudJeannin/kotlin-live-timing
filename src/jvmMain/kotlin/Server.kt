@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
 import kotlin.random.Random
 
 fun main() {
-    val port = System.getenv("PORT")?.toInt() ?: 9090
+    val port = System.getenv("PORT")?.toInt() ?: 8080
     val log = LoggerFactory.getLogger("Server")
 
     log.info("starting server on port $port")
@@ -24,8 +24,7 @@ fun main() {
             get("/") {
                 call.respondText(
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
-                    ContentType.Text.Html,
-                    HttpStatusCode.OK,
+                    ContentType.Text.Html
                     )
             }
             static("/") {
@@ -56,7 +55,7 @@ fun main() {
                 gzip()
             }
         }
-    }.start(wait = false)
+    }.start(wait = true)
 }
 
 private fun populateTimeBoard(): TimeBoard {
