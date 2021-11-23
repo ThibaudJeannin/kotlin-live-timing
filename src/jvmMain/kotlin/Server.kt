@@ -14,7 +14,8 @@ import java.io.File
 import kotlin.random.Random
 
 fun main() {
-    val port = System.getenv("PORT")?.toInt() ?: 9090
+    val port = System.getenv("PORT")?.toInt() ?: 8080
+    println("using port $port")
     embeddedServer(Netty, port) {
 
         routing {
