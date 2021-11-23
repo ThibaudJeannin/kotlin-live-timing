@@ -12,8 +12,10 @@ import io.live.timing.LapTime
 import io.live.timing.TimeBoard
 import java.io.File
 import kotlin.random.Random
+import kotlin.system.exitProcess
 
 fun main() {
+    exitProcess(4)
     val port = System.getenv("PORT")?.toInt() ?: 8080
     println("using port $port")
     embeddedServer(Netty, port) {
