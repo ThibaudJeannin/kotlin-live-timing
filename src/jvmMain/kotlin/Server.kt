@@ -19,7 +19,6 @@ fun main() {
 
     log.info("starting server on port $port")
     embeddedServer(Netty, port) {
-
         routing {
             get("/") {
                 call.respondText(
@@ -41,6 +40,9 @@ fun main() {
                 log.info("handler request on /laps")
                 val timeBoard = populateTimeBoard()
                 call.respond(timeBoard.allLaps)
+            }
+            get("/test") {
+                call.respond(HttpStatusCode.OK)
             }
 
             install(ContentNegotiation) {
