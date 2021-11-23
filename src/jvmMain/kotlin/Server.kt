@@ -11,25 +11,26 @@ import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.TimeBoard
 import org.slf4j.LoggerFactory
-import java.io.File
 import kotlin.random.Random
-import kotlin.system.exitProcess
 
 fun main() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     val log = LoggerFactory.getLogger("Server")
 
-   log.info("starting server on port $port")
+    log.info("starting server on port $port")
     embeddedServer(Netty, port) {
 
         routing {
             get("/") {
                 log.info("handler request on /")
-
+                val html = this::class.java.classLoader.getResource("index.html")!!.readText()
+                log.info("responds with $html")
                 call.respondText(
-                    this::class.java.classLoader.getResource("index.html")!!.readText(),
-                    ContentType.Text.Html
-                )
+                    html,
+                    ContentType.Text.Html,
+                    HttpStatusCode.OK,
+
+                    )
             }
             static("/") {
                 log.info("handler request on static /")
