@@ -26,6 +26,7 @@ fun main() {
                     this::class.java.classLoader.getResource("index.html")!!.readText(),
                     ContentType.Text.Html
                     )
+                log.info("responded to /");
             }
             static("/") {
                 log.info("handler request on static /")
