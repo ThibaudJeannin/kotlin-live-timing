@@ -15,9 +15,8 @@ import kotlin.random.Random
 import kotlin.system.exitProcess
 
 fun main() {
-    exitProcess(4)
     val port = System.getenv("PORT")?.toInt() ?: 8080
-    println("using port $port")
+    System.err.println("using port $port")
     embeddedServer(Netty, port) {
 
         routing {
