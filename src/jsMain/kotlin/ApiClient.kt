@@ -12,15 +12,15 @@ val jsonClient = HttpClient {
 }
 val baseUrl = "${window.location.protocol}//${window.location.host}"
 
-suspend fun getTimeBoard(): TimeBoard {
-    return jsonClient.get("$baseUrl/timeboard")
-}
-
 suspend fun getPilots(): List<Pilot> {
     return jsonClient.get("$baseUrl/pilots")
 }
 
 suspend fun getLaps(): List<ChronoLap> {
     return jsonClient.get("$baseUrl/laps")
+}
+
+suspend fun getTimeBoard(): TimeBoard {
+    return jsonClient.get("$baseUrl/timeboard")
 }
 
