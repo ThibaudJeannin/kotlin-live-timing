@@ -11,7 +11,7 @@ import io.live.timing.TimeBoard
 import java.io.File
 import kotlin.random.Random
 
-fun main(args: Array<String>): Unit = io.ktor.server.cio.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.jetty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
     routing {
@@ -51,6 +51,9 @@ fun Application.module(testing: Boolean = false) {
             call.respond(timeBoard.allLaps)
         }
         get("/test") {
+            call.respondText("<p>foo</p>", ContentType.Text.Html)
+        }
+        get("/test-large") {
             call.respondText("<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", ContentType.Text.Html)
         }
 
