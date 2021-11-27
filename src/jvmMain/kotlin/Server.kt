@@ -16,14 +16,14 @@ fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
     routing {
-        get("/") {
-            call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText(),
-                ContentType.Text.Html,
-                HttpStatusCode.OK
-            )
-            log.info("responded to /")
-        }
+//        get("/") {
+//            call.respondText(
+//                this::class.java.classLoader.getResource("index.html")!!.readText(),
+//                ContentType.Text.Html,
+//                HttpStatusCode.OK
+//            )
+//            log.info("responded to /")
+//        }
         get("/app") {
             val indexFile = File(this::class.java.classLoader.getResource("index.html")!!.toURI())
             call.respondFile(indexFile)
@@ -31,6 +31,8 @@ fun Application.module(testing: Boolean = false) {
         }
         static("/") {
             log.info("handler request on static /")
+            resource("/", "index.html")
+            resource("/index", "index.html")
             resources("")
         }
 
