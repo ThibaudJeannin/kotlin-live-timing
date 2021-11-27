@@ -11,7 +11,7 @@ import io.live.timing.TimeBoard
 import java.io.File
 import kotlin.random.Random
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = io.ktor.server.tomcat.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
     routing {
