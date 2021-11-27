@@ -52,7 +52,7 @@ fun Application.module(testing: Boolean = false) {
             call.respond(timeBoard.allLaps)
         }
         get("/test") {
-            call.respond(HttpStatusCode.OK, "ok")
+            call.respondText("<p>foo</p>", ContentType.Text.Html)
         }
 
         install(ContentNegotiation) {
