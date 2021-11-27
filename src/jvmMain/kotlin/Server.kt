@@ -10,56 +10,59 @@ import io.ktor.server.netty.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.TimeBoard
-import org.slf4j.LoggerFactory
 import kotlin.random.Random
 
-fun main() {
-    val port = System.getenv("PORT")?.toInt() ?: 8080
-    val log = LoggerFactory.getLogger("Server")
+fun main(args: Array<String>): Unit = EngineMain.main(args)
 
-    log.info("starting server on port $port")
-    embeddedServer(Netty, port) {
-        routing {
-            get("/") {
-                call.respondText(
-                    this::class.java.classLoader.getResource("index.html")!!.readText(),
-                    ContentType.Text.Html,
-                    HttpStatusCode.OK
-                    )
-                log.info("responded to /");
-            }
-            static("/") {
-                log.info("handler request on static /")
-                resources("")
-            }
-
-            get("/pilots") {
-                log.info("handler request on /pilots")
-                call.respond(pilots)
-            }
-            get("/laps") {
-                log.info("handler request on /laps")
-                val timeBoard = populateTimeBoard()
-                call.respond(timeBoard.allLaps)
-            }
-            get("/test") {
-                call.respond(HttpStatusCode.OK, "ok")
-            }
-
-            install(ContentNegotiation) {
-                json()
-            }
-            install(CORS) {
-                method(HttpMethod.Get)
-                method(HttpMethod.Post)
-                method(HttpMethod.Delete)
-                anyHost()
-            }
-            install(Compression) {
-                gzip()
-            }
+fun Application.module(testing: Boolean = false) {
+    routing {
+        get("/") {
+            call.respondText(
+                this::class.java.classLoader.getResource("index.html")!!.readText(),
+                ContentType.Text.Html,
+                HttpStatusCode.OK
+            )
+            log.info("responded to /")
         }
-    }.start(wait = true)
+        get("/app") {
+            call.respondText(
+                this::class.java.classLoader.getResource("index.html")!!.readText(),
+                ContentType.Text.Html,
+                HttpStatusCode.OK
+            )
+            log.info("responded to /")
+        }
+        static("/") {
+            log.info("handler request on static /")
+            resources("")
+        }
+
+        get("/pilots") {
+            log.info("handler request on /pilots")
+            call.respond(pilots)
+        }
+        get("/laps") {
+            log.info("handler request on /laps")
+            val timeBoard = populateTimeBoard()
+            call.respond(timeBoard.allLaps)
+        }
+        get("/test") {
+            call.respond(HttpStatusCode.OK, "ok")
+        }
+
+        install(ContentNegotiation) {
+            json()
+        }
+        install(CORS) {
+            method(HttpMethod.Get)
+            method(HttpMethod.Post)
+            method(HttpMethod.Delete)
+            anyHost()
+        }
+        install(Compression) {
+            gzip()
+        }
+    }
 }
 
 private fun populateTimeBoard(): TimeBoard {
