@@ -5,7 +5,6 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
-import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
@@ -25,12 +24,9 @@ fun Application.module(testing: Boolean = false) {
             log.info("responded to /")
         }
         get("/app") {
-            call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText(),
-                ContentType.Text.Html,
-                HttpStatusCode.OK
-            )
-            log.info("responded to /")
+            val indexFile = new File(this::class.java.classLoader.getResource("index.html")!!.toURI())
+            call.respondFile(indexFile)
+            log.info("responded to /app")
         }
         static("/") {
             log.info("handler request on static /")
