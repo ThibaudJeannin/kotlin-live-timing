@@ -9,6 +9,7 @@ import io.ktor.server.netty.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.TimeBoard
+import java.io.File
 import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
@@ -24,7 +25,7 @@ fun Application.module(testing: Boolean = false) {
             log.info("responded to /")
         }
         get("/app") {
-            val indexFile = new File(this::class.java.classLoader.getResource("index.html")!!.toURI())
+            val indexFile = File(this::class.java.classLoader.getResource("index.html")!!.toURI())
             call.respondFile(indexFile)
             log.info("responded to /app")
         }
