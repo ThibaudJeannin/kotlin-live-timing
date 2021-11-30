@@ -21,40 +21,37 @@ fun Application.module(testing: Boolean = false) {
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
-
-            log.info("responded to /")
         }
         get("/app") {
-            val indexFile = File(this::class.java.classLoader.getResource("index.html")!!.toURI())
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "index.html")
                     .toString()
             )
-            call.respondFile(indexFile)
-            log.info("responded to /app")
+            call.respondText(
+                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 10),
+                ContentType.Text.Html,
+                HttpStatusCode.OK
+            )
         }
         static("/") {
-            log.info("handler request on static /")
             resource("/", "index.html")
             resource("/index", "index.html")
             resources("")
         }
 
         get("/pilots") {
-            log.info("handler request on /pilots")
             call.respond(pilots)
         }
         get("/laps") {
-            log.info("handler request on /laps")
             val timeBoard = populateTimeBoard()
             call.respond(timeBoard.allLaps)
         }
         get("/test") {
-            call.respondText("<p>foo</p>", ContentType.Text.Html)
+            call.respondText("<p>foo</p><br><p>bar</p>", ContentType.Text.Html)
         }
         get("/test-large") {
-            call.respondText("<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", ContentType.Text.Html)
+            call.respondText("<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>bar</p>", ContentType.Text.Html)
         }
 
         install(ContentNegotiation) {
