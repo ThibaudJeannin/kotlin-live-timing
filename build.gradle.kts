@@ -1,7 +1,7 @@
 plugins {
-    kotlin("multiplatform") version "1.5.31"
+    kotlin("multiplatform") version "1.6.0"
     application
-    kotlin("plugin.serialization") version "1.5.31"
+    kotlin("plugin.serialization") version "1.6.0"
 }
 
 group = "me.thibaud"
@@ -44,7 +44,9 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-serialization:1.6.6")
                 implementation("io.ktor:ktor-server-core:1.6.6")
-                implementation("io.ktor:ktor-server-jetty:1.6.6")
+                implementation("io.ktor:ktor-server-cio:1.6.6")
+//                implementation("io.ktor:ktor-server-netty:1.6.6")
+//                implementation("io.ktor:ktor-server-jetty:1.6.6")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
                 implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.4.0")
             }
