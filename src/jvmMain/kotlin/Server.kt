@@ -29,7 +29,7 @@ fun Application.module(testing: Boolean = false) {
                     .toString()
             )
             call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 100),
+                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 400),
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
