@@ -28,12 +28,16 @@ fun Application.module(testing: Boolean = false) {
 """<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Kotlin LiveTiming</title>
+    <meta charset="UTF-8">
+    <title>Kotlin LiveTiming</title>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Titillium Web' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
 </head>
 <body>
-</body>
-</html>""",
+<div id="root"></div>
+<script src="kotlin-live-timing.js"></script>
+</body>""",
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
