@@ -5,7 +5,6 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
-import io.ktor.util.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.TimeBoard
@@ -24,14 +23,17 @@ fun Application.module(testing: Boolean = false) {
             )
         }
         get("/app") {
-            log.info("request is ${call.request.toLogString()} ${call.parameters.toMap()}")
-            call.response.header(
-                HttpHeaders.ContentDisposition,
-                ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "index.html")
-                    .toString()
-            )
+            log.info("request is ${call.request.toLogString()}")
             call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 100),
+"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kotlin LiveTiming</title>
+</head>
+<body>
+</body>
+</html>""",
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
