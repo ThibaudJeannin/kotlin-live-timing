@@ -5,10 +5,10 @@ import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
+import io.ktor.util.*
 import io.live.timing.ChronoLap
 import io.live.timing.LapTime
 import io.live.timing.TimeBoard
-import java.io.File
 import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -16,7 +16,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
     routing {
         get("/") {
-            log.debug("request is ${call.request}")
+            log.info("request is ${call.request.toLogString()}")
             call.respondText(
                 this::class.java.classLoader.getResource("index.html")!!.readText(),
                 ContentType.Text.Html,
@@ -24,13 +24,14 @@ fun Application.module(testing: Boolean = false) {
             )
         }
         get("/app") {
+            log.info("request is ${call.request.toLogString()} ${call.parameters.toMap()}")
             call.response.header(
                 HttpHeaders.ContentDisposition,
                 ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "index.html")
                     .toString()
             )
             call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 150),
+                this::class.java.classLoader.getResource("index.html")!!.readText().substring(0, 100),
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
@@ -52,7 +53,19 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("<p>foo</p><br><p>bar</p>", ContentType.Text.Html)
         }
         get("/test-large") {
-            call.respondText("<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>bar</p>", ContentType.Text.Html)
+            call.respondText(
+                "<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>bar</p>",
+                ContentType.Text.Html
+            )
+        }
+        get("/length/{length}") {
+            val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+            val length = call.parameters["length"]?.toInt() ?: 0
+            val randomString = (1..length)
+                .map { _ -> kotlin.random.Random.nextInt(0, charPool.size) }
+                .map(charPool::get)
+                .joinToString("");
+            call.respondText(randomString, ContentType.Text.Html, HttpStatusCode.OK)
         }
 
         install(ContentNegotiation) {
