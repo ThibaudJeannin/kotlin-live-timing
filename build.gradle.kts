@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform") version "1.6.0"
     application
     kotlin("plugin.serialization") version "1.6.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "me.thibaud"
@@ -44,10 +45,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-serialization:1.6.6")
                 implementation("io.ktor:ktor-server-core:1.6.6")
-//                implementation("io.ktor:ktor-server-cio:1.6.6")
-//                implementation("io.ktor:ktor-server-tomcat:1.6.6")
                 implementation("io.ktor:ktor-server-netty:1.6.6")
-//                implementation("io.ktor:ktor-server-jetty:1.6.6")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
                 implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.4.0")
             }
@@ -82,7 +80,21 @@ tasks.getByName<Jar>("jvmJar") {
     }
     val webpackTask = tasks.getByName<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack>(taskName)
     dependsOn(webpackTask) // make sure JS gets compiled first
-    from(File(webpackTask.destinationDirectory, webpackTask.outputFileName)) // bring output file along into the JAR
+    from(File(webpackTask.destinationDirectory, webpackTask.outputFileName))
+}
+
+// include JS artifacts in shadowJar
+tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+    val taskName = if (project.hasProperty("isProduction")
+        || project.gradle.startParameter.taskNames.contains("installDist")
+    ) {
+        "jsBrowserProductionWebpack"
+    } else {
+        "jsBrowserDevelopmentWebpack"
+    }
+    val webpackTask = tasks.getByName<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack>(taskName)
+    dependsOn(webpackTask) // make sure JS gets compiled first
+    from(File(webpackTask.destinationDirectory, webpackTask.outputFileName))
 }
 
 tasks.getByName<JavaExec>("run") {

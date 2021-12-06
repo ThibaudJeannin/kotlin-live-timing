@@ -14,22 +14,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module() {
     routing {
-        get("/") {
-            log.info("request is ${call.request.toLogString()}")
-            call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText(),
-                ContentType.Text.Html,
-                HttpStatusCode.OK
-            )
-        }
-        get("/app") {
-            log.info("request is ${call.request.toLogString()}")
-            call.respondText(
-                this::class.java.classLoader.getResource("index.html")!!.readText(),
-                ContentType.Text.Html,
-                HttpStatusCode.OK
-            )
-        }
         static("/") {
             resource("/", "index.html")
             resource("/index", "index.html")
@@ -42,24 +26,6 @@ fun Application.module() {
         get("/laps") {
             val timeBoard = populateTimeBoard()
             call.respond(timeBoard.allLaps)
-        }
-        get("/test") {
-            call.respondText("<p>foo</p><br><p>bar</p>", ContentType.Text.Html)
-        }
-        get("/test-large") {
-            call.respondText(
-                "<p>foo</p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>bar</p>",
-                ContentType.Text.Html
-            )
-        }
-        get("/length/{length}") {
-            val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
-            val length = call.parameters["length"]?.toInt() ?: 0
-            val randomString = (1..length)
-                .map { _ -> kotlin.random.Random.nextInt(0, charPool.size) }
-                .map(charPool::get)
-                .joinToString("");
-            call.respondText(randomString, ContentType.Text.Html, HttpStatusCode.OK)
         }
 
         install(ContentNegotiation) {
