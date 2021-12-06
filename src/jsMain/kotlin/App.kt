@@ -32,7 +32,6 @@ val app = fc<PropsWithChildren> {
     }
 
     styledDiv {
-        console.log(timeBoard)
         css {
             backgroundColor = Color("#FF1E00")
             color = Color.white
@@ -156,7 +155,11 @@ private fun StyledDOMBuilder<TD>.numberInBotPilot(pilot: Pilot) {
     numberInBox(pilot.number, Color(pilot.team.color), Color.black)
 }
 
-private fun StyledDOMBuilder<TD>.numberInBox(number: Number, backgroundColor: Color = Color.white, numberColor: Color = Color.black) {
+private fun StyledDOMBuilder<TD>.numberInBox(
+    number: Number,
+    backgroundColor: Color = Color.white,
+    numberColor: Color = Color.black
+) {
     styledDiv {
         css {
             val size = 30.px

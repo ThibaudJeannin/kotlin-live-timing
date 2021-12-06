@@ -20,10 +20,10 @@ fun Application.module() {
             resources("")
         }
 
-        get("/pilots") {
+        get("/api/pilots") {
             call.respond(pilots)
         }
-        get("/laps") {
+        get("/api/laps") {
             val timeBoard = populateTimeBoard()
             call.respond(timeBoard.allLaps)
         }

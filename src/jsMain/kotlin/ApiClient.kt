@@ -4,7 +4,6 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.live.timing.ChronoLap
 import io.live.timing.Pilot
-import io.live.timing.TimeBoard
 import kotlinx.browser.window
 
 val jsonClient = HttpClient {
@@ -13,14 +12,10 @@ val jsonClient = HttpClient {
 val baseUrl = "${window.location.protocol}//${window.location.host}"
 
 suspend fun getPilots(): List<Pilot> {
-    return jsonClient.get("$baseUrl/pilots")
+    return jsonClient.get("$baseUrl/api/pilots")
 }
 
 suspend fun getLaps(): List<ChronoLap> {
-    return jsonClient.get("$baseUrl/laps")
-}
-
-suspend fun getTimeBoard(): TimeBoard {
-    return jsonClient.get("$baseUrl/timeboard")
+    return jsonClient.get("$baseUrl/api/laps")
 }
 

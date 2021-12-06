@@ -1,7 +1,5 @@
 package io.live.timing
 
-import kotlinx.serialization.Serializable
-
 class TimeBoard(val pilots: List<Pilot>) {
 
     val allLaps: MutableList<ChronoLap>
