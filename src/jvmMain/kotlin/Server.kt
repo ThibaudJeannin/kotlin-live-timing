@@ -12,7 +12,7 @@ import kotlin.random.Random
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.module(testing: Boolean = false) {
+fun Application.module() {
     routing {
         get("/") {
             log.info("request is ${call.request.toLogString()}")
@@ -25,19 +25,7 @@ fun Application.module(testing: Boolean = false) {
         get("/app") {
             log.info("request is ${call.request.toLogString()}")
             call.respondText(
-"""<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Kotlin LiveTiming</title>
-    <link rel="stylesheet" href="style.css">
-    <link href='https://fonts.googleapis.com/css?family=Titillium Web' rel='stylesheet'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
-</head>
-<body>
-<div id="root"></div>
-<script src="kotlin-live-timing.js"></script>
-</body>""",
+                this::class.java.classLoader.getResource("index.html")!!.readText(),
                 ContentType.Text.Html,
                 HttpStatusCode.OK
             )
