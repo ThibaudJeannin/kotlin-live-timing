@@ -9,6 +9,8 @@ group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
 val versionKtor = "1.6.6"
+val versionReact = "17.0.2-pre.270-kotlin-1.6.0"
+val versionKotlinStyled = "5.3.3-pre.270-kotlin-1.6.0"
 
 repositories {
     mavenCentral()
@@ -55,9 +57,9 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.270-kotlin-1.6.0")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.270-kotlin-1.6.0")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.3-pre.270-kotlin-1.6.0")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$versionReact")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$versionReact")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:$versionKotlinStyled")
                 implementation("io.ktor:ktor-client-js:$versionKtor")
                 implementation("io.ktor:ktor-client-json:$versionKtor")
                 implementation("io.ktor:ktor-client-serialization:$versionKtor")
