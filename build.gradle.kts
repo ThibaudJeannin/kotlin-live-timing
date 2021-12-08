@@ -8,6 +8,8 @@ plugins {
 group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
+val versionKtor = "1.6.6"
+
 repositories {
     mavenCentral()
     google()
@@ -32,7 +34,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
-                implementation("io.ktor:ktor-client-core:1.6.6")
+                implementation("io.ktor:ktor-client-core:$versionKtor")
             }
         }
         val commonTest by getting {
@@ -43,9 +45,9 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-serialization:1.6.6")
-                implementation("io.ktor:ktor-server-core:1.6.6")
-                implementation("io.ktor:ktor-server-netty:1.6.6")
+                implementation("io.ktor:ktor-serialization:$versionKtor")
+                implementation("io.ktor:ktor-server-core:$versionKtor")
+                implementation("io.ktor:ktor-server-netty:$versionKtor")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
                 implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.4.0")
             }
@@ -56,9 +58,9 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:17.0.2-pre.270-kotlin-1.6.0")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:17.0.2-pre.270-kotlin-1.6.0")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:5.3.3-pre.270-kotlin-1.6.0")
-                implementation("io.ktor:ktor-client-js:1.6.6")
-                implementation("io.ktor:ktor-client-json:1.6.6")
-                implementation("io.ktor:ktor-client-serialization:1.6.6")
+                implementation("io.ktor:ktor-client-js:$versionKtor")
+                implementation("io.ktor:ktor-client-json:$versionKtor")
+                implementation("io.ktor:ktor-client-serialization:$versionKtor")
                 implementation(npm("styled-components", "~5.3.3"))
             }
         }
