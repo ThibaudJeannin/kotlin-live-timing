@@ -9,16 +9,18 @@ group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
 val versionKtor = "1.6.6"
+val versionCoroutines = "1.6.0"
 val versionReact = "17.0.2-pre.270-kotlin-1.6.0"
 val versionKotlinStyled = "5.3.3-pre.270-kotlin-1.6.0"
 
 repositories {
     mavenCentral()
     google()
+    maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
 }
 
 kotlin {
-    jvm{
+    jvm {
         withJava()
     }
     js {
@@ -27,7 +29,10 @@ kotlin {
                 cssSupport.enabled = true
             }
             testTask {
-                enabled = false
+                enabled = true
+                useKarma {
+                    useFirefox()
+                }
             }
         }
         binaries.executable()
@@ -37,11 +42,14 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
                 implementation("io.ktor:ktor-client-core:$versionKtor")
+                implementation("io.ktor:ktor-client-serialization:$versionKtor")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$versionCoroutines")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$versionCoroutines")
             }
         }
 
@@ -50,6 +58,7 @@ kotlin {
                 implementation("io.ktor:ktor-serialization:$versionKtor")
                 implementation("io.ktor:ktor-server-core:$versionKtor")
                 implementation("io.ktor:ktor-server-netty:$versionKtor")
+                implementation("io.ktor:ktor-client-cio:$versionKtor")
                 implementation("ch.qos.logback:logback-classic:1.2.7")
                 implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.4.0")
             }
