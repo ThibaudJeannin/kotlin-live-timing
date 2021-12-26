@@ -1,6 +1,7 @@
 package com.ergast
 
 import com.ergast.serialization.ConstructorsResponse
+import com.ergast.serialization.DriversResponse
 import com.ergast.serialization.QualifyingResponse
 import io.ktor.client.*
 import io.ktor.client.features.json.*
@@ -8,8 +9,12 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 
-//Data from http://ergast.com/mrd/
 class ErgastAPIClient {
+
+    //Data from http://ergast.com/mrd/
+    val baseUrl = "http://ergast.com"
+    val season2021endpoint = "$baseUrl/api/f1/2021"
+
 
     private val httpClient = HttpClient {
         install(ResponseObserver) {
@@ -25,10 +30,18 @@ class ErgastAPIClient {
     }
 
     suspend fun getQualifyingResult(): QualifyingResponse {
-        return httpClient.get("http://ergast.com/api/f1/2021/22/qualifying.json")
+        return httpClient.get("$season2021endpoint/22/qualifying.json")
     }
 
     suspend fun getConstructors(): ConstructorsResponse {
-        return httpClient.get("http://ergast.com/api/f1/2021/constructors.json")
+        return httpClient.get("$season2021endpoint/constructors.json")
+    }
+
+    suspend fun getConstructorsForDriver(driver : String): ConstructorsResponse {
+        return httpClient.get("$season2021endpoint/drivers/$driver/constructors.json")
+    }
+
+    suspend fun getDrivers(): DriversResponse {
+        return httpClient.get("$season2021endpoint/drivers.json")
     }
 }

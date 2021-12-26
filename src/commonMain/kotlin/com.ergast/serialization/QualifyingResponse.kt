@@ -4,5 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class QualifyingResponse(
-    val MRData: MRData2
+    val MRData: QualifyingMRData
+)
+
+@Serializable
+data class QualifyingMRData(
+    val series: String,
+    val url: String
 )

@@ -18,12 +18,13 @@ import styled.*
 private val scope = MainScope()
 
 val app = fc<PropsWithChildren> {
+    val dataProvider = InternalDataProvider()
     var timeBoard by useState(TimeBoard(emptyList()))
 
     useEffectOnce {
         scope.launch {
-            val pilots = getPilots()
-            val laps = getLaps()
+            val pilots = dataProvider.getPilots()
+            val laps = dataProvider.getLaps()
             val newTimeBoard = TimeBoard(pilots)
             newTimeBoard.insertLapTimes(*laps.toTypedArray())
             newTimeBoard.updateTimeBoard()

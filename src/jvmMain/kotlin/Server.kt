@@ -16,16 +16,18 @@ fun Application.module() {
     routing {
         static("/") {
             resource("/", "index.html")
-            resource("/index", "index.html")
-            resources("")
+            resource("style.css")
+            resource("kotlin-live-timing.js")
         }
 
-        get("/api/pilots") {
-            call.respond(pilots)
-        }
-        get("/api/laps") {
-            val timeBoard = populateTimeBoard()
-            call.respond(timeBoard.allLaps)
+        route("/api") {
+            get("/pilots") {
+                call.respond(pilots)
+            }
+            get("/laps") {
+                val timeBoard = populateTimeBoard()
+                call.respond(timeBoard.allLaps)
+            }
         }
 
         install(ContentNegotiation) {

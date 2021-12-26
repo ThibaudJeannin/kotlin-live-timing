@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ConstructorsResponse(
-    val MRData: MRData
+    val MRData: ConstructorsMRData
 )
 
 @Serializable
-data class MRData(
+data class ConstructorsMRData(
     val ConstructorTable: ConstructorTable
 )
 

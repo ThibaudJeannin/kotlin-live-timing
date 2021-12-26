@@ -1,6 +1,5 @@
 package com.ergast
 
-import io.live.timing.Constructor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
@@ -27,6 +26,14 @@ internal class ErgastAPIClientTest {
         val response = apiClient.getConstructors()
         for (constructor in response.MRData.ConstructorTable.Constructors) {
             println(constructor)
+        }
+    }
+
+    @Test
+    fun testGetDrivers() = runTest {
+        val response = apiClient.getDrivers()
+        for (driver in response.MRData.DriverTable.Drivers) {
+            println(driver)
         }
     }
 
