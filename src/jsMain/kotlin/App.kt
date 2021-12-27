@@ -18,7 +18,7 @@ import styled.*
 private val scope = MainScope()
 
 val app = fc<PropsWithChildren> {
-    val dataProvider = InternalDataProvider()
+    val dataProvider = ErgastDataProvider()
     var timeBoard by useState(TimeBoard(emptyList()))
 
     useEffectOnce {
@@ -92,6 +92,12 @@ val app = fc<PropsWithChildren> {
                         }
                     }
                     styledTh {
+                        +"constructor"
+                        css {
+                            width = LinearDimension.fillAvailable
+                        }
+                    }
+                    styledTh {
                         +"laptime"
                         css {
                             width = 25.pct
@@ -132,6 +138,13 @@ val app = fc<PropsWithChildren> {
                                 fontWeight = FontWeight("700")
                             }
                             +pilot.name
+                        }
+                        styledTd {
+                            css {
+                                fontSize = 18.px
+                                fontWeight = FontWeight("700")
+                            }
+                            +pilot.team.name
                         }
                         styledTd {
                             css {

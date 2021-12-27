@@ -4,6 +4,7 @@ import com.ergast.serialization.ConstructorsResponse
 import com.ergast.serialization.DriversResponse
 import com.ergast.serialization.QualifyingResponse
 import io.ktor.client.*
+import io.ktor.client.features.cache.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.observer.*
@@ -12,9 +13,8 @@ import io.ktor.client.request.*
 class ErgastAPIClient {
 
     //Data from http://ergast.com/mrd/
-    val baseUrl = "http://ergast.com"
-    val season2021endpoint = "$baseUrl/api/f1/2021"
-
+    private val baseUrl = "http://ergast.com"
+    private val season2021endpoint = "$baseUrl/api/f1/2021"
 
     private val httpClient = HttpClient {
         install(ResponseObserver) {
@@ -27,6 +27,7 @@ class ErgastAPIClient {
                 ignoreUnknownKeys = true
             })
         }
+        install(HttpCache)
     }
 
     suspend fun getQualifyingResult(): QualifyingResponse {
