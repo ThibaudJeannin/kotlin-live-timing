@@ -118,7 +118,7 @@ val app = fc<PropsWithChildren> {
 
                             backgroundColor = when {
                                 i % 2 == 0 -> Color.whiteSmoke
-                                else -> Color.white
+                                else -> Color.snow
                             }
                             borderStyle = BorderStyle.dashed
                             borderLeftStyle = BorderStyle.none
@@ -166,7 +166,17 @@ val app = fc<PropsWithChildren> {
 }
 
 private fun StyledDOMBuilder<TD>.numberInBotPilot(pilot: Pilot) {
-    numberInBox(pilot.number, Color(pilot.team.color), Color.black)
+    val backgroundColor = Color(pilot.team.color)
+    val numberColor = getForegroundColorForBackgroundColor(pilot.team.color)
+    numberInBox(pilot.number, backgroundColor, numberColor)
+}
+
+private fun getForegroundColorForBackgroundColor(color: String): Color {
+    val redChannel = color.substring(1, 3).toInt(16)
+    val greenChannel = color.substring(3, 5).toInt(16)
+    val blueChannel = color.substring(5, 7).toInt(16)
+    val brightness = intArrayOf(redChannel, greenChannel, blueChannel).average()
+    return if (brightness > 120) Color.black else Color.white
 }
 
 private fun StyledDOMBuilder<TD>.numberInBox(

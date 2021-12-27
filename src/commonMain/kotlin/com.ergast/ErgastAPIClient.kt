@@ -19,7 +19,9 @@ class ErgastAPIClient {
     private val httpClient = HttpClient {
         install(ResponseObserver) {
             onResponse { response ->
-                println("HTTP status: ${response.status.value}")
+                if (response.status.value >= 300) {
+                    println("HTTP status: ${response.status.value}")
+                }
             }
         }
         install(JsonFeature) {
