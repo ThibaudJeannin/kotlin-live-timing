@@ -1,9 +1,7 @@
 import com.ergast.ErgastAPIClient
+import com.ergast.serialization.QualifyingResults
 import com.ergast.serialization.responses.Driver
-import io.live.timing.ChronoLap
-import io.live.timing.Constructor
-import io.live.timing.LapTime
-import io.live.timing.Pilot
+import io.live.timing.*
 
 class ErgastDataProvider : LiveTimingDataProvider {
 
@@ -17,12 +15,21 @@ class ErgastDataProvider : LiveTimingDataProvider {
         }
     }
 
-    private suspend fun convertErgastDriverToPilot(it: Driver): Pilot {
+    private suspend fun convertErgastDriverToPilot(driver: Driver): Pilot {
         val constructorsForDriver =
-            ergastApiClient.getConstructorsForDriver(it.driverId).MRData.ConstructorTable.Constructors.last()
-        val constructorColor = constructorColors[constructorsForDriver.constructorId]
-        val constructor = Constructor(constructorsForDriver.name, constructorColor ?: "#4c4c4c")
-        return Pilot("${it.givenName} ${it.familyName}", it.permanentNumber, constructor)
+            ergastApiClient.getConstructorsForDriver(driver.driverId).MRData.ConstructorTable.Constructors.last()
+        val constructor = convertErgastConstructor(constructorsForDriver)
+        return convertErgastDriverToPilot(driver, constructor)
+    }
+
+    private fun convertErgastConstructor(constructor: com.ergast.serialization.responses.Constructor): Constructor {
+        val constructorColor = constructorColors[constructor.constructorId]
+        return Constructor(constructor.name, constructorColor ?: "#4c4c4c")
+    }
+
+    private fun convertErgastDriverToPilot(driver: Driver, constructor: Constructor): Pilot {
+        return Pilot("${driver.givenName} ${driver.familyName}", driver.permanentNumber, constructor)
+
     }
 
     private val constructorColors = mapOf(
@@ -57,6 +64,34 @@ class ErgastDataProvider : LiveTimingDataProvider {
                 qualifyingLapTime
             )
         }
+    }
+
+    override suspend fun getTimeBoard(): TimeBoard {
+        val qualifyingResults = ergastApiClient.getQualifyingResult().MRData.RaceTable.Races[0].QualifyingResults
+        val timeBoard = TimeBoard(qualifyingResults!!.map { getPilotFromResult(it) })
+        qualifyingResults!!.forEach {
+            val qualifyingLapTime: LapTime
+            if (it.Q3 != null) {
+                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q3!!)
+            } else if (it.Q2 != null) {
+                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q2!!)
+            } else {
+                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q1!!)
+            }
+
+            val chronoLap = ChronoLap(
+                getPilotFromResult(it),
+                qualifyingLapTime
+            )
+            timeBoard.insertLapTime(chronoLap)
+        }
+        return timeBoard
+
+    }
+
+    private fun getPilotFromResult(it: QualifyingResults): Pilot {
+        val constructor = convertErgastConstructor(it.Constructor)
+        return convertErgastDriverToPilot(it.Driver, constructor)
     }
 
     private fun convertErgastTimeToChronoLap(time: String): LapTime {

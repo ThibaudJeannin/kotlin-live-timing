@@ -23,10 +23,7 @@ val app = fc<PropsWithChildren> {
 
     useEffectOnce {
         scope.launch {
-            val pilots = dataProvider.getPilots()
-            val laps = dataProvider.getLaps()
-            val newTimeBoard = TimeBoard(pilots)
-            newTimeBoard.insertLapTimes(*laps.toTypedArray())
+            val newTimeBoard = dataProvider.getTimeBoard()
             newTimeBoard.updateTimeBoard()
             timeBoard = newTimeBoard
         }

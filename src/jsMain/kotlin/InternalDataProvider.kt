@@ -4,6 +4,7 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.live.timing.ChronoLap
 import io.live.timing.Pilot
+import io.live.timing.TimeBoard
 import kotlinx.browser.window
 
 class InternalDataProvider : LiveTimingDataProvider {
@@ -21,5 +22,11 @@ class InternalDataProvider : LiveTimingDataProvider {
         return jsonClient.get("$baseUrl/api/laps")
     }
 
-
+    override suspend fun getTimeBoard(): TimeBoard {
+        val timeBoard = TimeBoard(this.getPilots())
+        for (lap in this.getLaps()) {
+            timeBoard.insertLapTime(lap)
+        }
+        return timeBoard
+    }
 }
