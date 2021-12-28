@@ -1,8 +1,9 @@
 package com.ergast
 
-import com.ergast.serialization.ConstructorsResponse
-import com.ergast.serialization.DriversResponse
-import com.ergast.serialization.QualifyingResponse
+import com.ergast.serialization.responses.ConstructorsResponse
+import com.ergast.serialization.responses.DriversResponse
+import com.ergast.serialization.responses.QualifyingResponse
+import com.ergast.serialization.responses.RaceResultResponse
 import io.ktor.client.*
 import io.ktor.client.features.cache.*
 import io.ktor.client.features.json.*
@@ -46,5 +47,9 @@ class ErgastAPIClient {
 
     suspend fun getDrivers(): DriversResponse {
         return httpClient.get("$season2021endpoint/drivers.json")
+    }
+
+    suspend fun getRaceResults(): RaceResultResponse {
+        return httpClient.get("$season2021endpoint/22/results.json")
     }
 }

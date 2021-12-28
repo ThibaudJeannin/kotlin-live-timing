@@ -1,4 +1,4 @@
-package com.ergast.serialization
+package com.ergast.serialization.responses
 
 import kotlinx.serialization.Serializable
 
