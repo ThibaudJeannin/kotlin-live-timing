@@ -41,7 +41,7 @@ class ErgastAPIClient {
         return httpClient.get("$season2021endpoint/constructors.json")
     }
 
-    suspend fun getConstructorsForDriver(driver : String): ConstructorsResponse {
+    suspend fun getConstructorsForDriver(driver: String): ConstructorsResponse {
         return httpClient.get("$season2021endpoint/drivers/$driver/constructors.json")
     }
 

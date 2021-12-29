@@ -1,5 +1,6 @@
 package com.ergast.serialization.responses
 
+import com.ergast.serialization.Constructor
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,11 +16,4 @@ data class ConstructorsMRData(
 @Serializable
 data class ConstructorTable(
     val Constructors: List<Constructor>
-)
-
-@Serializable
-data class Constructor(
-    val constructorId: String,
-    val url: String,
-    val name: String,
 )

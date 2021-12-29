@@ -1,7 +1,5 @@
 package com.ergast.serialization
 
-import com.ergast.serialization.responses.Constructor
-import com.ergast.serialization.responses.Driver
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,8 +19,8 @@ data class Race(
 
 @Serializable
 data class QualifyingResults(
-    val number : String,
-    val position:  String,
+    val number: String,
+    val position: String,
     val Driver: Driver,
     val Constructor: Constructor,
     val Q1: String? = null,
@@ -32,10 +30,10 @@ data class QualifyingResults(
 
 @Serializable
 data class Results(
-    val number : String,
-    val position:  String,
-    val positionText:  String,
-    val points:  String,
+    val number: String,
+    val position: String,
+    val positionText: String,
+    val points: String,
     val Driver: Driver,
     val Constructor: Constructor,
     val grid: String,

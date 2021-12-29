@@ -7,7 +7,6 @@ import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.TD
 import react.PropsWithChildren
-import react.dom.div
 import react.dom.h3
 import react.dom.tr
 import react.fc
@@ -31,26 +30,44 @@ val app = fc<PropsWithChildren> {
 
     styledDiv {
         css {
-            backgroundColor = Color("#FF1E00")
-            color = Color.white
-            position = Position.relative
             height = 120.px
-            width = 120.px
-            borderRadius = 12.px
-            borderStyle = BorderStyle.solid
-            lineHeight = LineHeight(30.px.toString())
-            fontWeight = FontWeight("900")
-            fontSize = 16.pt
-            paddingLeft = 10.px
-            display = Display.flex
-            alignItems = Align.center
-            boxSizing = BoxSizing.borderBox
         }
-        +"Kotlin\nLiveTiming"
-    }
-    div {
-        h3 {
-            +"Tableau des temps"
+        styledDiv {
+            css {
+                backgroundColor = Color("#FF1E00")
+                color = Color.white
+                position = Position.relative
+                float = Float.left
+                height = 100.pct
+                width = 120.px
+                borderRadius = 12.px
+                borderStyle = BorderStyle.solid
+                lineHeight = LineHeight(30.px.toString())
+                fontWeight = FontWeight("900")
+                fontSize = 16.pt
+                paddingLeft = 10.px
+                display = Display.flex
+                alignItems = Align.center
+                boxSizing = BoxSizing.borderBox
+            }
+            +"Kotlin\nLiveTiming"
+        }
+        styledDiv {
+            css {
+                position = Position.relative
+                float = Float.right
+                height = 100.pct
+                lineHeight = LineHeight(30.px.toString())
+                fontWeight = FontWeight("900")
+                fontSize = 16.pt
+                paddingRight = 10.px
+                display = Display.flex
+                alignItems = Align.center
+                boxSizing = BoxSizing.borderBox
+            }
+            h3 {
+                +"Timeboard"
+            }
         }
     }
 
@@ -105,7 +122,6 @@ val app = fc<PropsWithChildren> {
             styledTbody {
                 var i = 0
                 for ((pilot: Pilot, lapTime: LapTime?) in timeBoard.sortedResults()) {
-                    i++
                     styledTr {
                         css {
                             textAlign = TextAlign.center
@@ -145,6 +161,9 @@ val app = fc<PropsWithChildren> {
                         }
                         styledTd {
                             css {
+                                if (i == 0 && lapTime != null) {
+                                    color = Color.purple
+                                }
                                 fontSize = 18.px
                                 fontFamily = "Roboto Mono"
                                 fontWeight = FontWeight("800")
@@ -156,6 +175,7 @@ val app = fc<PropsWithChildren> {
                             }
                         }
                     }
+                    i++
                 }
             }
         }

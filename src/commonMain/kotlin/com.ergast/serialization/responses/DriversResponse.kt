@@ -1,5 +1,6 @@
 package com.ergast.serialization.responses
 
+import com.ergast.serialization.Driver
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,15 +16,4 @@ data class PilotMRData(
 @Serializable
 data class DriveTable(
     val Drivers: List<Driver>
-)
-
-@Serializable
-data class Driver(
-    val driverId: String,
-    val permanentNumber: Int,
-    val code: String,
-    val givenName: String,
-    val familyName: String,
-    val dateOfBirth: String,
-    val nationality: String
 )

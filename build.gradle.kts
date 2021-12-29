@@ -1,17 +1,17 @@
 plugins {
-    kotlin("multiplatform") version "1.6.0"
+    kotlin("multiplatform") version "1.6.10"
     application
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("plugin.serialization") version "1.6.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
-val versionKtor = "1.6.6"
+val versionKtor = "1.6.7"
 val versionCoroutines = "1.6.0"
-val versionReact = "17.0.2-pre.270-kotlin-1.6.0"
-val versionKotlinStyled = "5.3.3-pre.270-kotlin-1.6.0"
+val versionReact = "17.0.2-pre.284-kotlin-1.6.10"
+val versionKotlinStyled = "5.3.3-pre.284-kotlin-1.6.10"
 
 repositories {
     mavenCentral()
@@ -40,7 +40,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 implementation("io.ktor:ktor-client-core:$versionKtor")
                 implementation("io.ktor:ktor-client-serialization:$versionKtor")
             }
@@ -59,8 +59,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-core:$versionKtor")
                 implementation("io.ktor:ktor-server-netty:$versionKtor")
                 implementation("io.ktor:ktor-client-cio:$versionKtor")
-                implementation("ch.qos.logback:logback-classic:1.2.7")
-                implementation("org.litote.kmongo:kmongo-coroutine-serialization:4.4.0")
+                implementation("ch.qos.logback:logback-classic:1.2.10")
             }
         }
 

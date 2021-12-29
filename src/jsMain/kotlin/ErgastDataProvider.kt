@@ -1,6 +1,6 @@
 import com.ergast.ErgastAPIClient
 import com.ergast.serialization.QualifyingResults
-import com.ergast.serialization.responses.Driver
+import com.ergast.serialization.Driver
 import io.live.timing.*
 
 class ErgastDataProvider : LiveTimingDataProvider {
@@ -22,7 +22,7 @@ class ErgastDataProvider : LiveTimingDataProvider {
         return convertErgastDriverToPilot(driver, constructor)
     }
 
-    private fun convertErgastConstructor(constructor: com.ergast.serialization.responses.Constructor): Constructor {
+    private fun convertErgastConstructor(constructor: com.ergast.serialization.Constructor): Constructor {
         val constructorColor = constructorColors[constructor.constructorId]
         return Constructor(constructor.name, constructorColor ?: "#4c4c4c")
     }
