@@ -47,17 +47,8 @@ class ErgastDataProvider : LiveTimingDataProvider {
 
     override suspend fun getLaps(): List<ChronoLap> {
         return ergastApiClient.getQualifyingResult().MRData.RaceTable.Races[0].QualifyingResults!!.map {
-            println(it)
-
-            val qualifyingLapTime: LapTime
-
-            if (it.Q3 != null) {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q3!!)
-            } else if (it.Q2 != null) {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q2!!)
-            } else {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q1!!)
-            }
+            val time: String = it.Q3 ?: (it.Q2 ?: it.Q1!!)
+            val qualifyingLapTime = convertErgastTimeToChronoLap(time)
 
             ChronoLap(
                 convertErgastDriverToPilot(it.Driver),
@@ -69,15 +60,9 @@ class ErgastDataProvider : LiveTimingDataProvider {
     override suspend fun getTimeBoard(): TimeBoard {
         val qualifyingResults = ergastApiClient.getQualifyingResult().MRData.RaceTable.Races[0].QualifyingResults
         val timeBoard = TimeBoard(qualifyingResults!!.map { getPilotFromResult(it) })
-        qualifyingResults!!.forEach {
-            val qualifyingLapTime: LapTime
-            if (it.Q3 != null) {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q3!!)
-            } else if (it.Q2 != null) {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q2!!)
-            } else {
-                qualifyingLapTime = convertErgastTimeToChronoLap(it.Q1!!)
-            }
+        qualifyingResults.forEach {
+            val time: String = it.Q3 ?: (it.Q2 ?: it.Q1!!)
+            val qualifyingLapTime = convertErgastTimeToChronoLap(time)
 
             val chronoLap = ChronoLap(
                 getPilotFromResult(it),
