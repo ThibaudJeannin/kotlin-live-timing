@@ -1,14 +1,16 @@
 import io.live.timing.LapTime
 import io.live.timing.Pilot
+import io.live.timing.Race
 import io.live.timing.TimeBoard
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.css.*
 import kotlinx.css.properties.LineHeight
 import kotlinx.html.TD
+import kotlinx.html.js.onChangeFunction
+import org.w3c.dom.HTMLSelectElement
 import react.PropsWithChildren
-import react.dom.h3
-import react.dom.tr
+import react.dom.*
 import react.fc
 import react.useEffectOnce
 import react.useState
@@ -18,11 +20,15 @@ private val scope = MainScope()
 
 val app = fc<PropsWithChildren> {
     val dataProvider = ErgastDataProvider()
+    var selectedRound = 22
     var timeBoard by useState(TimeBoard(emptyList()))
+    var races : List<Race> by useState(emptyList())
 
     useEffectOnce {
         scope.launch {
-            val newTimeBoard = dataProvider.getTimeBoard()
+            println("launch")
+            races = dataProvider.getRaces()
+            val newTimeBoard = dataProvider.getTimeBoard(selectedRound)
             newTimeBoard.updateTimeBoard()
             timeBoard = newTimeBoard
         }
@@ -51,6 +57,51 @@ val app = fc<PropsWithChildren> {
                 boxSizing = BoxSizing.borderBox
             }
             +"Kotlin\nLiveTiming"
+        }
+        styledDiv {
+            css {
+                position = Position.relative
+                float = Float.left
+                height = 100.pct
+                display = Display.flex
+                alignItems = Align.center
+                boxSizing = BoxSizing.borderBox
+                paddingLeft = 10.px
+                paddingRight = 10.px
+            }
+            form {
+                styledLabel {
+                    +"Grand Prix"
+                    css {
+                        paddingRight = 10.px
+                        fontSize = 18.px
+                        fontWeight = FontWeight("700")
+                    }
+                }
+                select {
+                    attrs.onChangeFunction = {
+                        val target = it.target as HTMLSelectElement
+                        println(target.value)
+                        selectedRound = target.value.toInt()
+
+                        scope.launch {
+                            println("launch again")
+                            val newTimeBoard = dataProvider.getTimeBoard(selectedRound)
+                            newTimeBoard.updateTimeBoard()
+                            timeBoard = newTimeBoard
+                        }
+                    }
+                    races.forEach {
+                        styledOption {
+                            attrs.value = it.id
+                            +it.name
+                            if (it.id == "22") {
+                                attrs.selected = true
+                            }
+                        }
+                    }
+                }
+            }
         }
         styledDiv {
             css {

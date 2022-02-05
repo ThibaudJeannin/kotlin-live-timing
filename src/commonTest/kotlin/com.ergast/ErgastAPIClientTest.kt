@@ -17,7 +17,7 @@ internal class ErgastAPIClientTest {
 
     @Test
     fun testGetQualifying() = runTest {
-        val response = apiClient.getQualifyingResult()
+        val response = apiClient.getQualifyingResult(22)
         println(response)
     }
 

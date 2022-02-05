@@ -1,6 +1,6 @@
 import com.ergast.ErgastAPIClient
-import com.ergast.serialization.QualifyingResults
 import com.ergast.serialization.Driver
+import com.ergast.serialization.QualifyingResults
 import io.live.timing.*
 
 class ErgastDataProvider : LiveTimingDataProvider {
@@ -46,7 +46,7 @@ class ErgastDataProvider : LiveTimingDataProvider {
     )
 
     override suspend fun getLaps(): List<ChronoLap> {
-        return ergastApiClient.getQualifyingResult().MRData.RaceTable.Races[0].QualifyingResults!!.map {
+        return ergastApiClient.getQualifyingResult(22).MRData.RaceTable.Races[0].QualifyingResults!!.map {
             val time: String = it.Q3 ?: (it.Q2 ?: it.Q1!!)
             val qualifyingLapTime = convertErgastTimeToChronoLap(time)
 
@@ -57,18 +57,19 @@ class ErgastDataProvider : LiveTimingDataProvider {
         }
     }
 
-    override suspend fun getTimeBoard(): TimeBoard {
-        val qualifyingResults = ergastApiClient.getQualifyingResult().MRData.RaceTable.Races[0].QualifyingResults
+    override suspend fun getTimeBoard(round: Int): TimeBoard {
+        val qualifyingResults = ergastApiClient.getQualifyingResult(round).MRData.RaceTable.Races[0].QualifyingResults
         val timeBoard = TimeBoard(qualifyingResults!!.map { getPilotFromResult(it) })
         qualifyingResults.forEach {
-            val time: String = it.Q3 ?: (it.Q2 ?: it.Q1!!)
-            val qualifyingLapTime = convertErgastTimeToChronoLap(time)
-
-            val chronoLap = ChronoLap(
-                getPilotFromResult(it),
-                qualifyingLapTime
-            )
-            timeBoard.insertLapTime(chronoLap)
+            val time: String? = it.Q3 ?: (it.Q2 ?: it.Q1)
+            if (time != null && time.isNotBlank()) {
+                val qualifyingLapTime = convertErgastTimeToChronoLap(time)
+                val chronoLap = ChronoLap(
+                    getPilotFromResult(it),
+                    qualifyingLapTime
+                )
+                timeBoard.insertLapTime(chronoLap)
+            }
         }
         return timeBoard
 
@@ -82,5 +83,10 @@ class ErgastDataProvider : LiveTimingDataProvider {
     private fun convertErgastTimeToChronoLap(time: String): LapTime {
         val splitTime = time.split(".", ":")
         return LapTime(splitTime[0].toInt(), splitTime[1].toInt(), splitTime[2].toInt())
+    }
+
+    override suspend fun getRaces(): List<Race> {
+        val racesList = ergastApiClient.getRacesList()
+        return racesList.MRData.RaceTable.Races.map { Race(it.Circuit.circuitName, it.round) }
     }
 }

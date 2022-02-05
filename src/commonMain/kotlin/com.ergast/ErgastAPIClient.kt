@@ -1,9 +1,6 @@
 package com.ergast
 
-import com.ergast.serialization.responses.ConstructorsResponse
-import com.ergast.serialization.responses.DriversResponse
-import com.ergast.serialization.responses.QualifyingResponse
-import com.ergast.serialization.responses.RaceResultResponse
+import com.ergast.serialization.responses.*
 import io.ktor.client.*
 import io.ktor.client.features.cache.*
 import io.ktor.client.features.json.*
@@ -33,8 +30,8 @@ class ErgastAPIClient {
         install(HttpCache)
     }
 
-    suspend fun getQualifyingResult(): QualifyingResponse {
-        return httpClient.get("$season2021endpoint/22/qualifying.json")
+    suspend fun getQualifyingResult(round : Int): QualifyingResponse {
+        return httpClient.get("$season2021endpoint/$round/qualifying.json")
     }
 
     suspend fun getConstructors(): ConstructorsResponse {
@@ -51,5 +48,9 @@ class ErgastAPIClient {
 
     suspend fun getRaceResults(): RaceResultResponse {
         return httpClient.get("$season2021endpoint/22/results.json")
+    }
+
+    suspend fun getRacesList(): RaceScheduleResponse {
+        return httpClient.get("$season2021endpoint.json")
     }
 }
