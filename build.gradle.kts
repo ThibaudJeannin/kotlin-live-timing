@@ -29,7 +29,7 @@ kotlin {
                 cssSupport.enabled = true
             }
             testTask {
-                enabled = true
+                enabled = false
                 useKarma {
                     useFirefox()
                 }
