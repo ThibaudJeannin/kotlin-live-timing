@@ -31,14 +31,14 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: build
-    - name: Build ShadowJar
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        arguments: shadowJar
+#    - name: Build with Gradle
+#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#      with:
+#        arguments: build
+#    - name: Build ShadowJar
+#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+#      with:
+#        arguments: shadowJar
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -46,6 +46,6 @@ jobs:
         role-session-name: github-actions
         aws-region: ${{ env.AWS_REGION }}
     # Upload a file to AWS s3
-    - name:  Copy index.html to s3
+    - name:  Copy file to s3
       run: |
-        aws s3 cp ./build/distributions/index.html s3://${{ env.BUCKET_NAME }}/
+        aws s3 cp ./build.gradle.kts s3://${{ env.BUCKET_NAME }}/
