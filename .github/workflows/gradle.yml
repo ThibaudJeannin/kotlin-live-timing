@@ -13,14 +13,17 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  BUCKET_NAME: "test-bucket-for-github-actions"
+  AWS_REGION: "eu-west-3"
+
 permissions:
   contents: read
+  id-token: write # This is required for requesting the JWT
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -36,3 +39,13 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: shadowJar
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::281089201710:role/github-actions
+        role-session-name: github-actions
+        aws-region: ${{ env.AWS_REGION }}
+    # Upload a file to AWS s3
+    - name:  Copy index.html to s3
+      run: |
+        aws s3 cp ./build/distributions/index.html s3://${{ env.BUCKET_NAME }}/
