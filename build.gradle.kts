@@ -10,8 +10,9 @@ version = "1.0-SNAPSHOT"
 
 val versionKtor = "2.2.1"
 val versionCoroutines = "1.6.4"
-val versionReact = "17.0.2-pre.284-kotlin-1.6.10"
-val versionKotlinStyled = "5.3.3-pre.284-kotlin-1.6.10"
+val versionReact = "18.2.0-pre.457"
+val versionStyledComponents = "5.3.6"
+val versionKotlinStyled = "5.3.6-pre.457"
 
 repositories {
     mavenCentral()
@@ -77,7 +78,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-js:$versionKtor")
                 implementation("io.ktor:ktor-client-content-negotiation:$versionKtor")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$versionKtor")
-                implementation(npm("styled-components", "~5.3.3"))
+                implementation(npm("styled-components", "~$versionStyledComponents"))
             }
         }
     }

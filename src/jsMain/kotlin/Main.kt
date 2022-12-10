@@ -1,9 +1,11 @@
+import dom.Element
+import dom.html.HTML.div
 import kotlinx.browser.document
-import react.dom.render
+import react.create
+import react.dom.client.createRoot
 
 fun main() {
     document.body!!.insertAdjacentHTML("afterbegin", "<div id='root'></div>")
-    render(document.getElementById("root")!!) {
-        child(app)
-    }
+    val container = document.getElementById("root")!! as Element
+    createRoot(container).render(app.create())
 }
