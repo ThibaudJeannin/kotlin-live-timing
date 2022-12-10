@@ -249,7 +249,7 @@ private fun getForegroundColorForBackgroundColor(color: String): Color {
 
 private fun StyledDOMBuilder<TD>.numberInBox(
     number: Number,
-    backgroundColor: Color = Color.white,
+    bgColor: Color = Color.white,
     numberColor: Color = Color.black
 ) {
     styledDiv {
@@ -257,7 +257,7 @@ private fun StyledDOMBuilder<TD>.numberInBox(
             val size = 30.px
 
             color = numberColor
-            this.backgroundColor = backgroundColor
+            backgroundColor = bgColor
             borderRadius = 10.px
             width = size
             height = size
