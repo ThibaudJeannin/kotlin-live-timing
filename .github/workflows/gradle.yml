@@ -39,6 +39,8 @@ jobs:
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
         arguments: shadowJar
+    - name: debug build dir
+      run: ls . && ls build && ls build/install
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
