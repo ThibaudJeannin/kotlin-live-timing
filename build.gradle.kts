@@ -9,7 +9,7 @@ group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
 val versionKtor = "2.2.1"
-val versionCoroutines = "1.6.0"
+val versionCoroutines = "1.6.4"
 val versionReact = "17.0.2-pre.284-kotlin-1.6.10"
 val versionKotlinStyled = "5.3.3-pre.284-kotlin-1.6.10"
 
