@@ -10,3 +10,4 @@ build/
 *.iml
 !**/testData/**/*.iml
 node_modules/
+system.properties
