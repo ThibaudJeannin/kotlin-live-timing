@@ -38,6 +38,6 @@ class InternalDataProvider : LiveTimingDataProvider {
     }
 
     override suspend fun getRaces(): List<Race> {
-        TODO("Not yet implemented")
+        return listOf(Race("Kyalami 2026", "kya2026"))
     }
 }
