@@ -10,7 +10,9 @@ import kotlinx.html.TD
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.HTMLSelectElement
 import react.PropsWithChildren
-import react.dom.*
+import react.dom.form
+import react.dom.h3
+import react.dom.tr
 import react.fc
 import react.useEffectOnce
 import react.useState
@@ -22,7 +24,7 @@ val app = fc<PropsWithChildren> {
     val dataProvider = ErgastDataProvider()
     var selectedRound = 22
     var timeBoard by useState(TimeBoard(emptyList()))
-    var races : List<Race> by useState(emptyList())
+    var races: List<Race> by useState(emptyList())
 
     useEffectOnce {
         scope.launch {
@@ -78,7 +80,7 @@ val app = fc<PropsWithChildren> {
                         fontWeight = FontWeight("700")
                     }
                 }
-                select {
+                styledSelect {
                     attrs.onChangeFunction = {
                         val target = it.target as HTMLSelectElement
                         println(target.value)
@@ -91,12 +93,30 @@ val app = fc<PropsWithChildren> {
                             timeBoard = newTimeBoard
                         }
                     }
+                    css {
+                        fontSize = 16.px
+                        borderStyle = BorderStyle.none
+                        margin(0.px)
+                        padding(0.em, 1.em, 0.em, 0.em)
+                        width = 100.pct
+                        height = 35.px
+                        backgroundColor = Color.white
+                        color = Color("#5b5b61")
+                    }
                     races.forEach {
                         styledOption {
                             attrs.value = it.id
                             +it.name
                             if (it.id == "22") {
                                 attrs.selected = true
+                            }
+
+                            css {
+                                color = Color.black
+                                backgroundColor = Color.white
+                                display = Display.flex
+                                minHeight = 20.px
+                                padding(0.px, 2.px, 1.px, 0.px)
                             }
                         }
                     }
