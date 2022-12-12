@@ -42,8 +42,8 @@ val app = fc<PropsWithChildren> {
         }
         styledDiv {
             css {
-                backgroundColor = Color("#FF1E00")
-                color = Color.white
+                backgroundColor = F1_WARM_RED
+                color = F1_HIGH_VIS_WHITE
                 position = Position.relative
                 float = Float.left
                 height = 100.pct
@@ -100,8 +100,8 @@ val app = fc<PropsWithChildren> {
                         padding(0.em, 1.em, 0.em, 0.em)
                         width = 100.pct
                         height = 35.px
-                        backgroundColor = Color.white
-                        color = Color("#5b5b61")
+                        backgroundColor = F1_HIGH_VIS_WHITE
+                        color = F1_CARBON_BLACK_70
                     }
                     races.forEach {
                         styledOption {
@@ -112,8 +112,8 @@ val app = fc<PropsWithChildren> {
                             }
 
                             css {
-                                color = Color.black
-                                backgroundColor = Color.white
+                                color = F1_CARBON_BLACK
+                                backgroundColor = F1_HIGH_VIS_WHITE
                                 display = Display.flex
                                 minHeight = 20.px
                                 padding(0.px, 2.px, 1.px, 0.px)
@@ -155,7 +155,7 @@ val app = fc<PropsWithChildren> {
             }
             styledThead {
                 css {
-                    color = Color.darkGrey
+                    color = F1_CARBON_BLACK_90
                 }
                 tr {
                     styledTh {
@@ -201,8 +201,8 @@ val app = fc<PropsWithChildren> {
                             padding(5.px)
 
                             backgroundColor = when {
-                                i % 2 == 0 -> Color.whiteSmoke
-                                else -> Color.snow
+                                i % 2 == 0 -> F1_OFF_WHITE
+                                else -> F1_HIGH_VIS_WHITE
                             }
                             borderStyle = BorderStyle.dashed
                             borderLeftStyle = BorderStyle.none
@@ -211,7 +211,7 @@ val app = fc<PropsWithChildren> {
                             borderWidth = 2.px
                         }
                         styledTd {
-                            numberInBox(i)
+                            numberInBox(i + 1, if (i == 0) F1_PURPLE else F1_CARBON_BLACK_90, F1_HIGH_VIS_WHITE)
                         }
                         styledTd {
                             numberInBotPilot(pilot)
@@ -233,7 +233,7 @@ val app = fc<PropsWithChildren> {
                         styledTd {
                             css {
                                 if (i == 0 && lapTime != null) {
-                                    color = Color.purple
+                                    color = F1_PURPLE
                                 }
                                 fontSize = 18.px
                                 fontFamily = "Roboto Mono"

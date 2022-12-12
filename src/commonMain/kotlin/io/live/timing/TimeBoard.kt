@@ -1,6 +1,6 @@
 package io.live.timing
 
-class TimeBoard(val pilots: List<Pilot>) {
+class TimeBoard(private val pilots: List<Pilot>) {
 
     val allLaps: MutableList<ChronoLap>
     var bestLaps: Map<Pilot, LapTime?>
