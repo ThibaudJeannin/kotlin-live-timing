@@ -10,7 +10,9 @@ import kotlinx.html.TD
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.HTMLSelectElement
 import react.PropsWithChildren
-import react.dom.*
+import react.dom.form
+import react.dom.h3
+import react.dom.tr
 import react.fc
 import react.useEffectOnce
 import react.useState
@@ -22,7 +24,7 @@ val app = fc<PropsWithChildren> {
     val dataProvider = ErgastDataProvider()
     var selectedRound = 22
     var timeBoard by useState(TimeBoard(emptyList()))
-    var races : List<Race> by useState(emptyList())
+    var races: List<Race> by useState(emptyList())
 
     useEffectOnce {
         scope.launch {
@@ -40,8 +42,8 @@ val app = fc<PropsWithChildren> {
         }
         styledDiv {
             css {
-                backgroundColor = Color("#FF1E00")
-                color = Color.white
+                backgroundColor = F1_WARM_RED
+                color = F1_HIGH_VIS_WHITE
                 position = Position.relative
                 float = Float.left
                 height = 100.pct
@@ -78,7 +80,7 @@ val app = fc<PropsWithChildren> {
                         fontWeight = FontWeight("700")
                     }
                 }
-                select {
+                styledSelect {
                     attrs.onChangeFunction = {
                         val target = it.target as HTMLSelectElement
                         println(target.value)
@@ -91,12 +93,30 @@ val app = fc<PropsWithChildren> {
                             timeBoard = newTimeBoard
                         }
                     }
+                    css {
+                        fontSize = 16.px
+                        borderStyle = BorderStyle.none
+                        margin(0.px)
+                        padding(0.em, 1.em, 0.em, 0.em)
+                        width = 100.pct
+                        height = 35.px
+                        backgroundColor = F1_HIGH_VIS_WHITE
+                        color = F1_CARBON_BLACK_70
+                    }
                     races.forEach {
                         styledOption {
                             attrs.value = it.id
                             +it.name
                             if (it.id == "22") {
                                 attrs.selected = true
+                            }
+
+                            css {
+                                color = F1_CARBON_BLACK
+                                backgroundColor = F1_HIGH_VIS_WHITE
+                                display = Display.flex
+                                minHeight = 20.px
+                                padding(0.px, 2.px, 1.px, 0.px)
                             }
                         }
                     }
@@ -135,7 +155,7 @@ val app = fc<PropsWithChildren> {
             }
             styledThead {
                 css {
-                    color = Color.darkGrey
+                    color = F1_CARBON_BLACK_90
                 }
                 tr {
                     styledTh {
@@ -181,8 +201,8 @@ val app = fc<PropsWithChildren> {
                             padding(5.px)
 
                             backgroundColor = when {
-                                i % 2 == 0 -> Color.whiteSmoke
-                                else -> Color.snow
+                                i % 2 == 0 -> F1_OFF_WHITE
+                                else -> F1_HIGH_VIS_WHITE
                             }
                             borderStyle = BorderStyle.dashed
                             borderLeftStyle = BorderStyle.none
@@ -191,7 +211,7 @@ val app = fc<PropsWithChildren> {
                             borderWidth = 2.px
                         }
                         styledTd {
-                            numberInBox(i)
+                            numberInBox(i + 1, if (i == 0) F1_PURPLE else F1_CARBON_BLACK_90, F1_HIGH_VIS_WHITE)
                         }
                         styledTd {
                             numberInBotPilot(pilot)
@@ -213,7 +233,7 @@ val app = fc<PropsWithChildren> {
                         styledTd {
                             css {
                                 if (i == 0 && lapTime != null) {
-                                    color = Color.purple
+                                    color = F1_PURPLE
                                 }
                                 fontSize = 18.px
                                 fontFamily = "Roboto Mono"
@@ -249,7 +269,7 @@ private fun getForegroundColorForBackgroundColor(color: String): Color {
 
 private fun StyledDOMBuilder<TD>.numberInBox(
     number: Number,
-    backgroundColor: Color = Color.white,
+    bgColor: Color = Color.white,
     numberColor: Color = Color.black
 ) {
     styledDiv {
@@ -257,7 +277,7 @@ private fun StyledDOMBuilder<TD>.numberInBox(
             val size = 30.px
 
             color = numberColor
-            this.backgroundColor = backgroundColor
+            backgroundColor = bgColor
             borderRadius = 10.px
             width = size
             height = size

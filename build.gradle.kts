@@ -1,17 +1,18 @@
 plugins {
-    kotlin("multiplatform") version "1.6.10"
+    kotlin("multiplatform") version "1.7.21"
     application
-    kotlin("plugin.serialization") version "1.6.10"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
+    kotlin("plugin.serialization") version "1.7.21"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "me.thibaud"
 version = "1.0-SNAPSHOT"
 
-val versionKtor = "1.6.7"
-val versionCoroutines = "1.6.0"
-val versionReact = "17.0.2-pre.284-kotlin-1.6.10"
-val versionKotlinStyled = "5.3.3-pre.284-kotlin-1.6.10"
+val versionKtor = "2.2.1"
+val versionCoroutines = "1.6.4"
+val versionReact = "18.2.0-pre.457"
+val versionStyledComponents = "5.3.6"
+val versionKotlinStyled = "5.3.6-pre.457"
 
 repositories {
     mavenCentral()
@@ -40,14 +41,16 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
                 implementation("io.ktor:ktor-client-core:$versionKtor")
-                implementation("io.ktor:ktor-client-serialization:$versionKtor")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$versionKtor")
+                implementation("io.ktor:ktor-client-content-negotiation:$versionKtor")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("io.ktor:ktor-serialization:$versionKtor")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$versionKtor")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$versionCoroutines")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$versionCoroutines")
             }
@@ -55,8 +58,12 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-serialization:$versionKtor")
                 implementation("io.ktor:ktor-server-core:$versionKtor")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$versionKtor")
+                implementation("io.ktor:ktor-server-content-negotiation:$versionKtor")
+                implementation("io.ktor:ktor-serialization:$versionKtor")
+                implementation("io.ktor:ktor-server-compression:$versionKtor")
+                implementation("io.ktor:ktor-server-cors:$versionKtor")
                 implementation("io.ktor:ktor-server-netty:$versionKtor")
                 implementation("io.ktor:ktor-client-cio:$versionKtor")
                 implementation("ch.qos.logback:logback-classic:1.2.10")
@@ -69,9 +76,9 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$versionReact")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-styled:$versionKotlinStyled")
                 implementation("io.ktor:ktor-client-js:$versionKtor")
-                implementation("io.ktor:ktor-client-json:$versionKtor")
-                implementation("io.ktor:ktor-client-serialization:$versionKtor")
-                implementation(npm("styled-components", "~5.3.3"))
+                implementation("io.ktor:ktor-client-content-negotiation:$versionKtor")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$versionKtor")
+                implementation(npm("styled-components", "~$versionStyledComponents"))
             }
         }
     }
@@ -133,11 +140,11 @@ distributions {
 
 rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin::class.java) {
     rootProject.the<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension>().versions.webpackDevServer.version =
-        "4.4.0"
+        "4.11.1 "
 }
 
 rootProject.extensions.configure<org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension> {
-    versions.webpackCli.version = "4.9.0"
+    versions.webpackCli.version = "4.10.0"
 }
 
 rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
