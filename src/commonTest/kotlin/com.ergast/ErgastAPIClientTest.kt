@@ -3,8 +3,10 @@ package com.ergast
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
+import kotlin.test.Ignore
 import kotlin.test.Test
 
+@Ignore
 @ExperimentalCoroutinesApi
 internal class ErgastAPIClientTest {
 
