@@ -5,21 +5,21 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Kotlin CI with Gradle
+name: Kotlin CI Gradle CD AWS
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
 
 env:
-  BUCKET_NAME: "test-bucket-for-github-actions"
   AWS_REGION: "eu-west-3"
 
 permissions:
   contents: read
-  id-token: write # This is required for requesting the JWT
+  id-token: write
 
 jobs:
   build:
@@ -31,21 +31,27 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-#    - name: Build with Gradle
-#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#      with:
-#        arguments: build
-#    - name: Build ShadowJar
-#      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-#      with:
-#        arguments: shadowJar
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
     - name: configure aws credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::281089201710:role/github-actions
         role-session-name: github-actions
         aws-region: ${{ env.AWS_REGION }}
-    # Upload a file to AWS s3
-    - name:  Copy file to s3
-      run: |
-        aws s3 cp ./build.gradle.kts s3://${{ env.BUCKET_NAME }}/
+    - name: deploy jar to beanstalk
+      uses: einaregilsson/beanstalk-deploy@v20
+      env:
+        VERSION_LABEL: kotlin livetiming-github-${{ github.run_id }}
+      with:
+        application_name: Kotlin LiveTiming
+        environment_name: Kotlinlivetiming-env-preprod
+        version_label: ${{ env.VERSION_LABEL }}
+        region: ${{ env.AWS_REGION }}
+        aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
+        aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        deployment_package: ./build/libs/kotlin-live-timing-1.0-SNAPSHOT-all.jar
+
