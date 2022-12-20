@@ -10,9 +10,9 @@ name: Kotlin CI Gradle CD AWS
 on:
   workflow_dispatch:
   push:
-    branches: [ "master" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
 
 env:
   AWS_REGION: "eu-west-3"
