@@ -10,9 +10,9 @@ name: Kotlin CI Gradle CD AWS
 on:
   workflow_dispatch:
   push:
-    branches: [ "develop" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "master" ]
 
 env:
   AWS_REGION: "eu-west-3"
@@ -47,7 +47,7 @@ jobs:
         VERSION_LABEL: kotlin livetiming-github-${{ github.run_id }}
       with:
         application_name: Kotlin LiveTiming
-        environment_name: Kotlinlivetiming-env-preprod
+        environment_name: Kotlinlivetiming-env
         version_label: ${{ env.VERSION_LABEL }}
         region: ${{ env.AWS_REGION }}
         aws_session_token: ${{ env.AWS_SESSION_TOKEN }}
