@@ -6,7 +6,6 @@ import kotlin.test.BeforeTest
 import kotlin.test.Ignore
 import kotlin.test.Test
 
-@Ignore
 @ExperimentalCoroutinesApi
 internal class ErgastAPIClientTest {
 

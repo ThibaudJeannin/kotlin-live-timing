@@ -21,7 +21,7 @@ import styled.*
 private val scope = MainScope()
 
 val app = fc<PropsWithChildren> {
-    val dataProvider = InternalDataProvider()
+    val dataProvider = ErgastDataProvider()
     var selectedRound = 22
     var timeBoard by useState(TimeBoard(emptyList()))
     var races: List<Race> by useState(emptyList())
