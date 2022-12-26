@@ -21,6 +21,7 @@ fun Application.module() {
             resource("/", "index.html")
             resource("style.css")
             resource("kotlin-live-timing.js")
+            resource("favicon.ico")
         }
 
         route("/api") {
