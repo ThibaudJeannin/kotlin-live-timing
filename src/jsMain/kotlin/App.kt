@@ -26,7 +26,7 @@ val app = fc<PropsWithChildren> {
     var selectedRound = "22"
     var timeBoard by useState(TimeBoard(emptyList()))
     var races: List<Race> by useState(emptyList())
-    var theme: ColorTheme by useState(ColorTheme.LIGHT)
+    var theme: ColorTheme by useState(ColorTheme.DARK)
 
     useEffectOnce {
         scope.launch {
@@ -108,8 +108,6 @@ val app = fc<PropsWithChildren> {
                         padding(0.em, 1.em, 0.em, 0.em)
                         width = 100.pct
                         height = 35.px
-                        backgroundColor = F1_HIGH_VIS_WHITE
-                        color = F1_CARBON_BLACK_70
                     }
                     races.forEach {
                         styledOption {
@@ -120,8 +118,6 @@ val app = fc<PropsWithChildren> {
                             }
 
                             css {
-                                color = F1_CARBON_BLACK
-                                backgroundColor = F1_HIGH_VIS_WHITE
                                 display = Display.flex
                                 minHeight = 20.px
                                 padding(0.px, 2.px, 1.px, 0.px)
