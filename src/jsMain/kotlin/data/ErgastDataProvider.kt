@@ -64,7 +64,7 @@ class ErgastDataProvider : LiveTimingDataProvider {
         val timeBoard = TimeBoard(qualifyingResults!!.map { getPilotFromResult(it) })
         qualifyingResults.forEach {
             val time: String? = it.Q3 ?: (it.Q2 ?: it.Q1)
-            if (time != null && time.isNotBlank()) {
+            if (!time.isNullOrBlank()) {
                 val qualifyingLapTime = convertErgastTimeToChronoLap(time)
                 val chronoLap = ChronoLap(
                     getPilotFromResult(it),
@@ -89,6 +89,6 @@ class ErgastDataProvider : LiveTimingDataProvider {
 
     override suspend fun getRaces(): List<Race> {
         val racesList = ergastApiClient.getRacesList()
-        return racesList.MRData.RaceTable.Races.map { Race(it.Circuit.circuitName, it.round) }
+        return racesList.MRData.RaceTable.Races.map { Race("${it.raceName} ${it.season}", it.round) }
     }
 }

@@ -22,6 +22,7 @@ data class RaceTable(
 data class Race(
     val season: String,
     val round: String,
+    val raceName: String,
     val Circuit: Circuit
 )
 
