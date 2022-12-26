@@ -1,3 +1,5 @@
+package style
+
 import kotlinx.css.Color
 
 val F1_WARM_RED = Color("#FF1E00")

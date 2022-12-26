@@ -1,3 +1,5 @@
+package data
+
 import com.ergast.ErgastAPIClient
 import com.ergast.serialization.Driver
 import com.ergast.serialization.QualifyingResults
@@ -57,8 +59,8 @@ class ErgastDataProvider : LiveTimingDataProvider {
         }
     }
 
-    override suspend fun getTimeBoard(round: Int): TimeBoard {
-        val qualifyingResults = ergastApiClient.getQualifyingResult(round).MRData.RaceTable.Races[0].QualifyingResults
+    override suspend fun getTimeBoard(raceId: String): TimeBoard {
+        val qualifyingResults = ergastApiClient.getQualifyingResult(raceId.toInt()).MRData.RaceTable.Races[0].QualifyingResults
         val timeBoard = TimeBoard(qualifyingResults!!.map { getPilotFromResult(it) })
         qualifyingResults.forEach {
             val time: String? = it.Q3 ?: (it.Q2 ?: it.Q1)

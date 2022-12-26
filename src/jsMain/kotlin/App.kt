@@ -1,3 +1,5 @@
+import browser.document
+import data.ErgastDataProvider
 import io.live.timing.LapTime
 import io.live.timing.Pilot
 import io.live.timing.Race
@@ -9,26 +11,25 @@ import kotlinx.css.properties.LineHeight
 import kotlinx.html.TD
 import kotlinx.html.js.onChangeFunction
 import org.w3c.dom.HTMLSelectElement
-import react.PropsWithChildren
+import react.*
 import react.dom.form
 import react.dom.h3
+import react.dom.onClick
 import react.dom.tr
-import react.fc
-import react.useEffectOnce
-import react.useState
+import style.*
 import styled.*
 
 private val scope = MainScope()
 
 val app = fc<PropsWithChildren> {
     val dataProvider = ErgastDataProvider()
-    var selectedRound = 22
+    var selectedRound = "22"
     var timeBoard by useState(TimeBoard(emptyList()))
     var races: List<Race> by useState(emptyList())
+    var theme: ColorTheme by useState(ColorTheme.LIGHT)
 
     useEffectOnce {
         scope.launch {
-            println("launch")
             races = dataProvider.getRaces()
             val newTimeBoard = dataProvider.getTimeBoard(selectedRound)
             newTimeBoard.updateTimeBoard()
@@ -36,11 +37,19 @@ val app = fc<PropsWithChildren> {
         }
     }
 
+    useEffect {
+        ColorTheme.values().forEach { colorTheme -> document.body.classList.remove(colorTheme.cssClassName) }
+        document.body.classList.add(theme.cssClassName)
+    }
+
     styledDiv {
         css {
             height = 120.px
         }
         styledDiv {
+            attrs.onClick = {
+                theme = theme.toggle()
+            }
             css {
                 backgroundColor = F1_WARM_RED
                 color = F1_HIGH_VIS_WHITE
@@ -49,7 +58,7 @@ val app = fc<PropsWithChildren> {
                 height = 100.pct
                 width = 120.px
                 borderRadius = 12.px
-                borderStyle = BorderStyle.solid
+                borderStyle = BorderStyle.none
                 lineHeight = LineHeight(30.px.toString())
                 fontWeight = FontWeight("900")
                 fontSize = 16.pt
@@ -84,10 +93,9 @@ val app = fc<PropsWithChildren> {
                     attrs.onChangeFunction = {
                         val target = it.target as HTMLSelectElement
                         println(target.value)
-                        selectedRound = target.value.toInt()
+                        selectedRound = target.value
 
                         scope.launch {
-                            println("launch again")
                             val newTimeBoard = dataProvider.getTimeBoard(selectedRound)
                             newTimeBoard.updateTimeBoard()
                             timeBoard = newTimeBoard
@@ -107,7 +115,7 @@ val app = fc<PropsWithChildren> {
                         styledOption {
                             attrs.value = it.id
                             +it.name
-                            if (it.id == "22") {
+                            if (it.id == selectedRound.toString()) {
                                 attrs.selected = true
                             }
 
@@ -154,9 +162,6 @@ val app = fc<PropsWithChildren> {
                 width = 100.pct
             }
             styledThead {
-                css {
-                    color = F1_CARBON_BLACK_90
-                }
                 tr {
                     styledTh {
                         +"position"
@@ -200,10 +205,12 @@ val app = fc<PropsWithChildren> {
                             height = 40.px
                             padding(5.px)
 
-                            backgroundColor = when {
-                                i % 2 == 0 -> F1_OFF_WHITE
-                                else -> F1_HIGH_VIS_WHITE
-                            }
+                            classes.add(
+                                when {
+                                    i % 2 == 0 -> "alternateA"
+                                    else -> "alternateB"
+                                }
+                            )
                             borderStyle = BorderStyle.dashed
                             borderLeftStyle = BorderStyle.none
                             borderRightStyle = BorderStyle.none
@@ -211,7 +218,12 @@ val app = fc<PropsWithChildren> {
                             borderWidth = 2.px
                         }
                         styledTd {
-                            numberInBox(i + 1, if (i == 0) F1_PURPLE else F1_CARBON_BLACK_90, F1_HIGH_VIS_WHITE)
+                            numberInBox(i + 1) {
+                                classes.add("number-position")
+                                if (i == 0) {
+                                    classes.add("purple")
+                                }
+                            }
                         }
                         styledTd {
                             numberInBotPilot(pilot)
@@ -254,9 +266,10 @@ val app = fc<PropsWithChildren> {
 }
 
 private fun StyledDOMBuilder<TD>.numberInBotPilot(pilot: Pilot) {
-    val backgroundColor = Color(pilot.team.color)
-    val numberColor = getForegroundColorForBackgroundColor(pilot.team.color)
-    numberInBox(pilot.number, backgroundColor, numberColor)
+    numberInBox(pilot.number) {
+        color = getForegroundColorForBackgroundColor(pilot.team.color)
+        backgroundColor = Color(pilot.team.color)
+    }
 }
 
 private fun getForegroundColorForBackgroundColor(color: String): Color {
@@ -269,15 +282,11 @@ private fun getForegroundColorForBackgroundColor(color: String): Color {
 
 private fun StyledDOMBuilder<TD>.numberInBox(
     number: Number,
-    bgColor: Color = Color.white,
-    numberColor: Color = Color.black
+    additionalCSS: CssBuilder.() -> Unit
 ) {
     styledDiv {
         css {
             val size = 30.px
-
-            color = numberColor
-            backgroundColor = bgColor
             borderRadius = 10.px
             width = size
             height = size
@@ -288,6 +297,7 @@ private fun StyledDOMBuilder<TD>.numberInBox(
             marginLeft = LinearDimension.auto
             marginRight = LinearDimension.auto
         }
+        css(additionalCSS)
         +"$number"
     }
 }

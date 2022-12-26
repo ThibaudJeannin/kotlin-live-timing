@@ -1,3 +1,72 @@
 * {
     font-family: "Titillium Web";
 }
+
+:root {
+   --f1_warm_red: #FF1E00;
+   --f1_high_vis_white: #FFFFFF;
+   --f1_off_white: #F7F4F1;
+   --f1_carbon_black: #15151E;
+   --f1_carbon_black_90: #2C2C34;
+   --f1_carbon_black_70: #5B5B61;
+   --f1_carbon_black_50: #89898E;
+   --f1_carbon_black_30: #B8B8BB;
+   --f1_purple: #800080;
+}
+
+.light-theme {
+   background-color: var(--f1_high_vis_white);
+   color: var(--f1_carbon_black);
+}
+
+.dark-theme {
+   background-color: var(--f1_carbon_black);
+   color: var(--f1_high_vis_white);
+}
+
+.light-theme th {
+   color: var(--f1_carbon_black_90);
+}
+
+.dark-theme th {
+   color: var(--f1_carbon_black_30);
+}
+
+.light-theme .alternateA {
+   background-color: var(--f1_off_white);
+}
+
+.light-theme .alternateB {
+   background-color: var(--f1_high_vis_white);
+}
+
+.dark-theme .alternateA {
+   background-color: var(--f1_carbon_black_90);
+}
+
+.dark-theme .alternateB {
+   background-color: var(--f1_carbon_black);
+}
+
+.light-theme tr {
+   border-color: var(--f1_carbon_black_90);
+}
+
+.dark-theme tr {
+   border-color: var(--f1_carbon_black);
+}
+
+div .number-position.purple {
+   color: var(--f1_high_vis_white);
+   background-color: var(--f1_purple);
+}
+
+.light-theme .number-position {
+   color: var(--f1_high_vis_white);
+   background-color: var(--f1_carbon_black_90);
+}
+
+.dark-theme .number-position {
+   color: var(--f1_carbon_black);
+   background-color: var(--f1_off_white);
+}

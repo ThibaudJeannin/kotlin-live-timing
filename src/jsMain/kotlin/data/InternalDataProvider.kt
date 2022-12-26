@@ -1,3 +1,5 @@
+package data
+
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -29,7 +31,7 @@ class InternalDataProvider : LiveTimingDataProvider {
         return httpClient.get("$baseUrl/api/laps").body()
     }
 
-    override suspend fun getTimeBoard(round: Int): TimeBoard {
+    override suspend fun getTimeBoard(raceId: String): TimeBoard {
         val timeBoard = TimeBoard(this.getPilots())
         for (lap in this.getLaps()) {
             timeBoard.insertLapTime(lap)
@@ -38,6 +40,9 @@ class InternalDataProvider : LiveTimingDataProvider {
     }
 
     override suspend fun getRaces(): List<Race> {
-        return listOf(Race("Kyalami 2026", "kya2026"))
+        return listOf(
+            Race("Kyalami 2026", "kya2026"),
+            Race("Sepang 2026", "sep2028")
+        )
     }
 }
