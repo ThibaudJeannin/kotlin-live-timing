@@ -80,3 +80,11 @@ div .number-position.purple {
     background-color: var(--f1_carbon_black);
     color: var(--f1_high_vis_white);
 }
+
+.light-theme h3 {
+    color: var(--f1_carbon_black);
+}
+
+.dark-theme h3 {
+    color: var(--f1_carbon_black_30);
+}

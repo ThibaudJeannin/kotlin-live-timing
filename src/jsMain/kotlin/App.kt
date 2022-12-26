@@ -26,7 +26,7 @@ val app = fc<PropsWithChildren> {
     var selectedRound = "22"
     var timeBoard by useState(TimeBoard(emptyList()))
     var races: List<Race> by useState(emptyList())
-    var theme: ColorTheme by useState(ColorTheme.DARK)
+    var theme: ColorTheme by useState(ColorTheme.LIGHT)
 
     useEffectOnce {
         scope.launch {
@@ -45,6 +45,7 @@ val app = fc<PropsWithChildren> {
     styledDiv {
         css {
             height = 80.px
+            paddingTop = 5.px
         }
         styledDiv {
             attrs.onClick = {
@@ -57,6 +58,8 @@ val app = fc<PropsWithChildren> {
                 float = Float.left
                 height = 100.pct
                 width = 200.px
+                marginLeft = 5.px
+                marginRight = 5.px
                 borderRadius = 12.px
                 borderStyle = BorderStyle.none
                 lineHeight = LineHeight(30.px.toString())
