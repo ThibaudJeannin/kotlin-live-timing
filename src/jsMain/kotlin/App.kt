@@ -44,7 +44,7 @@ val app = fc<PropsWithChildren> {
 
     styledDiv {
         css {
-            height = 120.px
+            height = 80.px
         }
         styledDiv {
             attrs.onClick = {
@@ -56,15 +56,16 @@ val app = fc<PropsWithChildren> {
                 position = Position.relative
                 float = Float.left
                 height = 100.pct
-                width = 120.px
+                width = 200.px
                 borderRadius = 12.px
                 borderStyle = BorderStyle.none
                 lineHeight = LineHeight(30.px.toString())
                 fontWeight = FontWeight("900")
                 fontSize = 16.pt
-                paddingLeft = 10.px
                 display = Display.flex
                 alignItems = Align.center
+                textAlign = TextAlign.center
+                justifyContent = JustifyContent.center
                 boxSizing = BoxSizing.borderBox
             }
             +"Kotlin\nLiveTiming"
@@ -106,14 +107,13 @@ val app = fc<PropsWithChildren> {
                         borderStyle = BorderStyle.none
                         margin(0.px)
                         padding(0.em, 1.em, 0.em, 0.em)
-                        width = 100.pct
                         height = 35.px
                     }
                     races.forEach {
                         styledOption {
                             attrs.value = it.id
                             +it.name
-                            if (it.id == selectedRound.toString()) {
+                            if (it.id == selectedRound) {
                                 attrs.selected = true
                             }
 
