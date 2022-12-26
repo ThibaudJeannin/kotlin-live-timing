@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("multiplatform") version "1.7.21"
     application
@@ -27,7 +29,9 @@ kotlin {
     js {
         browser {
             commonWebpackConfig {
-                cssSupport.enabled = true
+                cssSupport() {
+                    this.enabled = true
+                }
             }
             testTask {
                 enabled = false
@@ -103,7 +107,7 @@ tasks.getByName<Jar>("jvmJar") {
 }
 
 // include JS artifacts in shadowJar
-tasks.getByName<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+tasks.getByName<ShadowJar>("shadowJar") {
     val taskName = if (project.hasProperty("isProduction")
         || project.gradle.startParameter.taskNames.contains("installDist")
     ) {
